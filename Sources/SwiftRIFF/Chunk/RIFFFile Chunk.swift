@@ -59,7 +59,7 @@ extension RIFFFile {
         ///     This identifier determines the specification outlining the structure and format of this chunk.
         ///   - range: The total byte offset range of the entire chunk.
         ///   - dataRange: The byte offset range of the chunk's usable data portion.
-        case generic(id: String, range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
+        case generic(id: RIFFFile.ChunkID, range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
     }
 }
 
@@ -70,11 +70,11 @@ extension RIFFFile.Chunk: Hashable { }
 extension RIFFFile.Chunk: Sendable { }
 
 extension RIFFFile.Chunk: RIFFFileChunkProtocol {
-    public var id: String {
+    public var id: RIFFFile.ChunkID {
         switch self {
-        case .riff: RIFFFile.ChunkID.riff.rawValue
-        case .list: RIFFFile.ChunkID.list.rawValue
-        case .info: RIFFFile.ChunkID.info.rawValue
+        case .riff: .riff
+        case .list: .list
+        case .info: .info
         case let .generic(id: id, range: _, dataRange: _): id
         }
     }

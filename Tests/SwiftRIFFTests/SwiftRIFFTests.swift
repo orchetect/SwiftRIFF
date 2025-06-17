@@ -97,13 +97,13 @@ func parseRIFFFile() async throws {
     
     guard case let .generic(fmtID, fmtRange, fmtDataRange) = chunks[0]
     else { Issue.record(); return }
-    #expect(fmtID == "fmt ")
+    #expect(fmtID == .generic(identifier: "fmt "))
     #expect(fmtRange == 12 ... 35)
     #expect(fmtDataRange == 20 ... 35)
     
     guard case let .generic(dataID, dataRange, dataDataRange) = chunks[1]
     else { Issue.record(); return }
-    #expect(dataID == "data")
+    #expect(dataID == .generic(identifier: "data"))
     #expect(dataRange == 36 ... 46)
     #expect(dataDataRange == 44 ... 46)
     

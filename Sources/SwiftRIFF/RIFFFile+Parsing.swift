@@ -210,9 +210,9 @@ extension FileHandle {
                 dataRange: descriptor.dataRange
             )
             
-        case let .generic(identifier: chunkID):
+        case .generic(identifier: _):
             chunk = .generic(
-                id: chunkID,
+                id: descriptor.id,
                 range: descriptor.chunkRange,
                 dataRange: descriptor.dataRange
             )
