@@ -10,22 +10,22 @@ extension RIFFFile {
         /// RIFF chunk.
         ///
         /// - Parameters:
-        ///   - identifier: 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
+        ///   - subID: 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
         ///     This identifier determines the specification outlining the structure and format of this chunk.
         ///   - chunks: Subchunks contained within the chunk.
         ///   - range: The total byte offset range of the entire chunk.
         ///   - dataRange: The byte offset range of the chunk's usable data portion.
-        case riff(identifier: String, chunks: [Chunk], range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
+        case riff(subID: String, chunks: [Chunk], range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
         
         /// LIST chunk.
         ///
         /// - Parameters:
-        ///   - identifier: 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
+        ///   - subID: 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
         ///     This identifier determines the specification outlining the structure and format of this chunk.
         ///   - chunks: Subchunks contained within the chunk.
         ///   - range: The total byte offset range of the entire chunk.
         ///   - dataRange: The byte offset range of the chunk's usable data portion.
-        case list(identifier: String, chunks: [Chunk], range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
+        case list(subID: String, chunks: [Chunk], range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
         
         /// The optional INFO chunk.
         ///
@@ -55,11 +55,11 @@ extension RIFFFile {
         /// A generic chunk.
         ///
         /// - Parameters:
-        ///   - identifier: 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
+        ///   - id: 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
         ///     This identifier determines the specification outlining the structure and format of this chunk.
         ///   - range: The total byte offset range of the entire chunk.
         ///   - dataRange: The byte offset range of the chunk's usable data portion.
-        case generic(identifier: String, range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
+        case generic(id: String, range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
     }
 }
 
@@ -72,15 +72,15 @@ extension RIFFFile.Chunk: Sendable { }
 extension RIFFFile.Chunk {
     public var info: String {
         switch self {
-        case let .riff(identifier, chunks, range, _):
-            "􀟈 \"RIFF\" \"\(identifier)\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)\n"
+        case let .riff(subID, chunks, range, _):
+            "􀟈 \"RIFF\" \"\(subID)\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)\n"
                 + chunks.map(\.info)
                 .joined(separator: "\n")
                 .split(separator: "\n")
                 .map { " 􀄵 \($0)" }
                 .joined(separator: "\n")
-        case let .list(identifier, chunks, range, _):
-            "􀟈 \"LIST\" \"\(identifier)\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)\n"
+        case let .list(subID, chunks, range, _):
+            "􀟈 \"LIST\" \"\(subID)\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)\n"
                 + chunks.map(\.info)
                 .joined(separator: "\n")
                 .split(separator: "\n")
@@ -88,8 +88,8 @@ extension RIFFFile.Chunk {
                 .joined(separator: "\n")
         case let .info(range, _):
             "􀟈 \"INFO\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)"
-        case let .generic(identifier, range, _):
-            "􀟈 \"\(identifier)\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)"
+        case let .generic(id, range, _):
+            "􀟈 \"\(id)\" - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)"
         }
     }
 }

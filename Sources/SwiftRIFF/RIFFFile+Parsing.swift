@@ -181,7 +181,7 @@ extension FileHandle {
             // recursively parse child subchunks
             let subchunks = try self.readSubchunks(in: descriptor, endianness: endianness)
             chunk = .riff(
-                identifier: subID,
+                subID: subID,
                 chunks: subchunks,
                 range: descriptor.chunkRange,
                 dataRange: postSubIDOffset ... dataRange.upperBound
@@ -198,7 +198,7 @@ extension FileHandle {
             // recursively parse child subchunks
             let subchunks = try self.readSubchunks(in: descriptor, endianness: endianness)
             chunk = .list(
-                identifier: subID,
+                subID: subID,
                 chunks: subchunks,
                 range: descriptor.chunkRange,
                 dataRange: postSubIDOffset ... dataRange.upperBound
@@ -212,7 +212,7 @@ extension FileHandle {
             
         case let .generic(identifier: chunkID):
             chunk = .generic(
-                identifier: chunkID,
+                id: chunkID,
                 range: descriptor.chunkRange,
                 dataRange: descriptor.dataRange
             )
