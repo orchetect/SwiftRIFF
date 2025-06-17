@@ -1,11 +1,11 @@
 //
-//  RIFFFileChunkProtocol.swift
+//  RIFFFileChunk.swift
 //  SwiftRIFF
 //
 //  Created by Steffan Andrews on 2025-06-17.
 //
 
-public protocol RIFFFileChunkProtocol {
+public protocol RIFFFileChunk {
     /// Chunk ID.
     ///
     /// 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
@@ -30,7 +30,7 @@ public protocol RIFFFileChunkProtocol {
     var chunks: [RIFFFile.Chunk] { get }
 }
 
-extension RIFFFileChunkProtocol {
+extension RIFFFileChunk {
     /// Returns the byte offset range of the chunk's usable data portion, excluding the sub-ID if present.
     public var dataRangeExcludingSubID: ClosedRange<UInt64>? {
         guard subID != nil else { return dataRange }

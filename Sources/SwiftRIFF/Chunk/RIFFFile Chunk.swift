@@ -71,7 +71,7 @@ extension RIFFFile.Chunk: Hashable { }
 
 extension RIFFFile.Chunk: Sendable { }
 
-extension RIFFFile.Chunk: RIFFFileChunkProtocol {
+extension RIFFFile.Chunk: RIFFFileChunk {
     public var id: RIFFFile.ChunkID {
         switch self {
         case .riff: .riff
