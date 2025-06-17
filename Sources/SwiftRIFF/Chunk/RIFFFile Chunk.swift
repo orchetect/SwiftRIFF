@@ -52,6 +52,8 @@ extension RIFFFile {
         ///   - dataRange: The byte offset range of the chunk's usable data portion.
         case info(range: ClosedRange<UInt64>, dataRange: ClosedRange<UInt64>?)
         
+        // TODO: add JUNK chunk
+        
         /// A generic chunk.
         ///
         /// - Parameters:
