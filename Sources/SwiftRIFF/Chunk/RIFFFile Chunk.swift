@@ -69,6 +69,44 @@ extension RIFFFile.Chunk: Hashable { }
 
 extension RIFFFile.Chunk: Sendable { }
 
+extension RIFFFile.Chunk: RIFFFileChunkProtocol {
+    public var id: String {
+        switch self {
+        case .riff: RIFFFile.ChunkID.riff.rawValue
+        case .list: RIFFFile.ChunkID.list.rawValue
+        case .info: RIFFFile.ChunkID.info.rawValue
+        case let .generic(id: id, range: _, dataRange: _): id
+        }
+    }
+    
+    public var subID: String? {
+        switch self {
+        case let .riff(subID: subID, chunks: _, range: _, dataRange: _): subID
+        case let .list(subID: subID, chunks: _, range: _, dataRange: _): subID
+        case .info: nil
+        case .generic: nil
+        }
+    }
+    
+    public var range: ClosedRange<UInt64> {
+        switch self {
+        case let .riff(subID: _, chunks: _, range: range, dataRange: _): range
+        case let .list(subID: _, chunks: _, range: range, dataRange: _): range
+        case let .info(range: range, dataRange: _): range
+        case let .generic(id: _, range: range, dataRange: _): range
+        }
+    }
+    
+    public var dataRange: ClosedRange<UInt64>? {
+        switch self {
+        case let .riff(subID: _, chunks: _, range: _, dataRange: dataRange): dataRange
+        case let .list(subID: _, chunks: _, range: _, dataRange: dataRange): dataRange
+        case let .info(range: _, dataRange: dataRange): dataRange
+        case let .generic(id: _, range: _, dataRange: dataRange): dataRange
+        }
+    }
+}
+
 extension RIFFFile.Chunk {
     public var info: String {
         switch self {
