@@ -4,7 +4,7 @@ import PackageDescription
 
 let package = Package(
     name: "SwiftRIFF",
-    platforms: [.macOS(.v10_15), .iOS(.v12)],
+    platforms: [.macOS(.v11), .iOS(.v14)],
     products: [
         .library(
             name: "SwiftRIFF",
