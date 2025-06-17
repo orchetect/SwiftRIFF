@@ -8,7 +8,9 @@
 import Foundation
 import OTCore
 
-/// RIFx File (RIFF, RIFX, RIF2).
+/// A view into a RIFx File (RIFF, RIFX, RIF2).
+///
+/// Parses an existing RIFx file, and supports a limited set of write operations.
 ///
 /// Resource Interchange File Format (RIFF) is a generic file container format for storing data in tagged chunks.
 /// It is historically used primarily for audio and video but can be used for nearly any content.
