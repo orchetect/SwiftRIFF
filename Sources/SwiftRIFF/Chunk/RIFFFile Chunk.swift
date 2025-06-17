@@ -142,3 +142,23 @@ extension RIFFFile.Chunk {
         }
     }
 }
+
+// MARK: - Collection Methods
+
+extension Sequence<RIFFFile.Chunk> {
+    public func filter(id: String) -> [Element] {
+        filter { $0.id.rawValue == id }
+    }
+    
+    public func filter(id: RIFFFile.ChunkID) -> [Element] {
+        filter { $0.id == id }
+    }
+    
+    public func first(id: String) -> Element? {
+        first { $0.id.rawValue == id }
+    }
+    
+    public func first(id: RIFFFile.ChunkID) -> Element? {
+        first { $0.id == id }
+    }
+}
