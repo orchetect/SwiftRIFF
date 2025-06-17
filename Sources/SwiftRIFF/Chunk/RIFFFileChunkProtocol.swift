@@ -25,4 +25,21 @@ public protocol RIFFFileChunkProtocol {
     
     /// The byte offset range of the chunk's usable data portion.
     var dataRange: ClosedRange<UInt64>? { get }
+    
+    /// Returns subchunks contained within the chunk.
+    var chunks: [RIFFFile.Chunk] { get }
+}
+
+extension RIFFFileChunkProtocol {
+    /// Returns the byte offset range of the chunk's usable data portion, excluding the sub-ID if present.
+    public var dataRangeExcludingSubID: ClosedRange<UInt64>? {
+        guard subID != nil else { return dataRange }
+        guard let dataRange else { return nil }
+        
+        let proposedLowerBound = dataRange.lowerBound.advanced(by: 4)
+        
+        guard proposedLowerBound <= dataRange.upperBound else { return nil }
+        
+        return proposedLowerBound ... dataRange.upperBound
+    }
 }

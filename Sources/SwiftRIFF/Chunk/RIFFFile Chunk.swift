@@ -107,6 +107,15 @@ extension RIFFFile.Chunk: RIFFFileChunkProtocol {
         case let .generic(id: _, range: _, dataRange: dataRange): dataRange
         }
     }
+    
+    public var chunks: [RIFFFile.Chunk] {
+        switch self {
+        case .riff(subID: _, let chunks, range: _, dataRange: _): chunks
+        case .list(subID: _, let chunks, range: _, dataRange: _): chunks
+        case .info(range: _, dataRange: _): []
+        case .generic(id: _, range: _, dataRange: _): []
+        }
+    }
 }
 
 extension RIFFFile.Chunk {
