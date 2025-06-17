@@ -110,3 +110,42 @@ func parseRIFFFile() async throws {
     // output info block
     print(riffFile.info)
 }
+
+@Test
+func writeRIFFFileChunk() async throws {
+    // write to file on disk so we can parse it
+    let tempFile = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).riff")
+    print("Writing to temp file: \(tempFile.path)")
+    try Data(riffBytes).write(to: tempFile)
+    
+    // read existing chunk
+    var riffFile = try RIFFFile(url: tempFile)
+    
+    var fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt "))
+    
+    // generate new chunk
+    let newFMTData: [UInt8] = [
+        0x01, 0x00, // Format type. PCM == int 1
+        0x04, 0x00, // Number of channels == int 4
+        0x00, 0x77, 0x01, 0x00, // Sample Rate == int 96_000
+        0x00, 0x70, 0x17, 0x00, // (SampleRate * BitsPerSample * Channels) / 8 == int 1_536_000
+        0x10, 0x00, // (BitsPerSample * Channels) / 8 == int 16
+        0x20, 0x00 // Bits per sample == int 32
+    ]
+    
+    try riffFile.write(chunk: fmtChunk, data: Data(newFMTData))
+    
+    // reload file
+    riffFile = try RIFFFile(url: tempFile)
+    
+    fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt "))
+    
+    #expect(fmtChunk.id == .generic(identifier: "fmt "))
+    #expect(fmtChunk.subID == nil)
+    let fmtDataRangeExcludingSubID = try #require(fmtChunk.dataRangeExcludingSubID)
+    
+    let h = try FileHandle(forReadingFrom: tempFile)
+    try h.seek(toOffset: fmtDataRangeExcludingSubID.lowerBound)
+    let fmtData = try h.read(upToCount: fmtDataRangeExcludingSubID.count)
+    #expect(fmtData == Data(newFMTData))
+}
