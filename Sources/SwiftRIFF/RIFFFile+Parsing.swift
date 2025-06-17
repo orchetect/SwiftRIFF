@@ -260,14 +260,11 @@ extension FileHandle {
         return offset
     }
     
-    func getEndOffset() throws(RIFFFileReadError) -> UInt64 {
-        let endOffset: uint64
-        do {
-            let currentOffset = try offset()
-            try seekToEnd()
-            endOffset = try offset()
-            try seek(toOffset: currentOffset) // restore offset
-        } catch { throw .fileReadError(subError: error) }
+    func getEndOffset() throws -> UInt64 {
+        let currentOffset = try offset()
+        try seekToEnd()
+        let endOffset = try offset()
+        try seek(toOffset: currentOffset) // restore offset
         return endOffset
     }
 }
