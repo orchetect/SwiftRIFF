@@ -1,5 +1,5 @@
 import Testing
-@testable import RIFFFileLib
+@testable import SwiftRIFF
 
 @Test func example() async throws {
     
