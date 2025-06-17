@@ -21,9 +21,9 @@ public enum RIFFFileReadError: LocalizedError {
 extension RIFFFileReadError {
     public var errorDescription: String? {
         switch self {
-        case let .fileReadError(subError): 
-            "File read error."
-                + (subError != nil ? " \(subError!.localizedDescription)" : "")
+        case let .fileReadError(subError: subError): 
+            "File read error"
+                + (subError != nil ? " \(subError!.localizedDescription)" : ".")
         case .unsupportedRIF2Type:
             "Unsupported RIF2 type. Support may be added in future."
         case .missingRIFFHeader:
