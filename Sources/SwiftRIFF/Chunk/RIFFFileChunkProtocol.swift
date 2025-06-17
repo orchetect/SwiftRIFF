@@ -9,7 +9,7 @@ public protocol RIFFFileChunkProtocol {
     /// Chunk ID.
     ///
     /// 4-Byte ASCII identifier, padded with ASCII 32 (space) if less than 4 characters.
-    var id: String { get }
+    var id: RIFFFile.ChunkID { get }
     
     /// Chunk Sub-ID.
     ///
