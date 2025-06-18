@@ -39,10 +39,6 @@ extension AnyRIFFFileChunk: RIFFFileChunk {
         base.id
     }
     
-    public var subID: String? {
-        base.getSubID
-    }
-    
     public var range: ClosedRange<UInt64> {
         base.range
     }
@@ -50,7 +46,15 @@ extension AnyRIFFFileChunk: RIFFFileChunk {
     public var dataRange: ClosedRange<UInt64>? {
         base.dataRange
     }
-    
+}
+
+extension AnyRIFFFileChunk /* : RIFFFileChunkHasSubID */ {
+    public var subID: String? {
+        base.getSubID
+    }
+}
+
+extension AnyRIFFFileChunk /* : RIFFFileChunkHasChunks */ {
     public var chunks: [AnyRIFFFileChunk] {
         base.getChunks
     }

@@ -17,7 +17,7 @@ public struct RIFFFileChunkID {
 }
 
 extension RIFFFileChunkID: Equatable {
-    // additional methods over and above the synthesized methods
+    // mixed-type methods in addition to the synthesized methods
     
     public static func == (lhs: Self, rhs: some StringProtocol) -> Bool {
         lhs.id == rhs
@@ -46,7 +46,7 @@ extension RIFFFileChunkID: CustomStringConvertible {
     }
 }
 
-// MARK: - Helpers
+// MARK: - Validation
 
 extension RIFFFileChunkID {
     /// Returns `true` if the string is formatted as a valid RIFF chunk identifier.

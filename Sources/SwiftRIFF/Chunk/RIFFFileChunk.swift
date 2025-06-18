@@ -20,6 +20,8 @@ public protocol RIFFFileChunk: Equatable, Hashable, Sendable {
     var dataRange: ClosedRange<UInt64>? { get }
 }
 
+// MARK: - Proxy properties for trait protocols
+
 extension RIFFFileChunk {
     /// Convenience:
     /// Conditionally casts as ``RIFFFileChunkHasSubID`` and returns `subID` if successful.
@@ -36,45 +38,7 @@ extension RIFFFileChunk {
     }
 }
 
-//extension RIFFFileChunk /* : Equatable */ {
-//    public static func == (lhs: Self, rhs: Self) -> Bool {
-//        lhs.isEqual(to: rhs)
-//    }
-//    
-//    public static func == (lhs: Self, rhs: any RIFFFileChunk) -> Bool {
-//        lhs.id == rhs.id
-//            && lhs.subID == rhs.subID
-//            && lhs.range == rhs.range
-//            && lhs.dataRange == rhs.dataRange
-//            && lhs.chunks.elementsEqual(rhs.chunks, by: { $0.isEqual(to: $1) })
-//    }
-//    
-//    public func isEqual(to other: any RIFFFileChunk) -> Bool {
-//        id == other.id
-//            && subID == other.subID
-//            && range == other.range
-//            && dataRange == other.dataRange
-//            && chunks.elementsEqual(other.chunks, by: { $0.isEqual(to: $1) })
-//    }
-//}
-//
-//public func == (lhs: any RIFFFileChunk, rhs: any RIFFFileChunk) -> Bool {
-//    lhs.id == rhs.id
-//        && lhs.subID == rhs.subID
-//        && lhs.range == rhs.range
-//        && lhs.dataRange == rhs.dataRange
-//        && lhs.chunks.elementsEqual(rhs.chunks, by: { $0.isEqual(to: $1) })
-//}
-
-//extension RIFFFileChunk /* : Hashable */ {
-//    public func hash(into hasher: inout Hasher) {
-//        hasher.combine(id)
-//        hasher.combine(subID)
-//        hasher.combine(range)
-//        hasher.combine(dataRange)
-//        hasher.combine(chunks.map(\.hashValue))
-//    }
-//}
+// MARK: - Generic Methods
 
 extension RIFFFileChunk {
     /// Returns the byte offset range of the chunk's usable data portion, excluding the sub-ID if present.
@@ -102,7 +66,7 @@ extension RIFFFileChunk {
     }
 }
 
-// MARK: - Collection Methods
+// MARK: - Type Erasure
 
 extension RIFFFileChunk {
     public func asAnyRIFFFileChunk() -> AnyRIFFFileChunk {
@@ -115,6 +79,8 @@ extension Sequence<any RIFFFileChunk> {
         map(AnyRIFFFileChunk.init(base:))
     }
 }
+
+// MARK: - Collection Methods
 
 extension Sequence<AnyRIFFFileChunk> {
     public func filter(id: String) -> [Element] {
