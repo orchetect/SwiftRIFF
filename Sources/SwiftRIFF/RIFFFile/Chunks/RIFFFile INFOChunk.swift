@@ -44,7 +44,7 @@ extension RIFFFile.INFOChunk {
     public init(
         handle: FileHandle,
         endianness: NumberEndianness,
-        additionalChunkDefinitions: RIFFFileChunkDefinitions
+        additionalChunkTypes: RIFFFileChunkTypes
     ) throws(RIFFFileReadError) {
         let descriptor = try handle.parseRIFFChunkDescriptor(endianness: endianness)
         

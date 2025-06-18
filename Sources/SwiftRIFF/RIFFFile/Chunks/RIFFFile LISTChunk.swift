@@ -37,7 +37,7 @@ extension RIFFFile.LISTChunk {
     public init(
         handle: FileHandle,
         endianness: NumberEndianness,
-        additionalChunkDefinitions: RIFFFileChunkDefinitions
+        additionalChunkTypes: RIFFFileChunkTypes
     ) throws(RIFFFileReadError) {
         let descriptor = try handle.parseRIFFChunkDescriptor(endianness: endianness)
         
@@ -59,7 +59,7 @@ extension RIFFFile.LISTChunk {
         chunks = try handle.parseRIFFSubchunks(
             in: descriptor,
             endianness: endianness,
-            additionalChunkDefinitions: additionalChunkDefinitions
+            additionalChunkTypes: additionalChunkTypes
         )
         .asAnyRIFFFileChunks()
     }

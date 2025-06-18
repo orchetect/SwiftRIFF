@@ -10,7 +10,7 @@ import OTCore
 
 extension FileHandle {
     func parseRIFF(
-        additionalChunkDefinitions: RIFFFileChunkDefinitions = [:]
+        additionalChunkTypes: RIFFFileChunkTypes = [:]
     ) throws(RIFFFileReadError) -> (
         riffFormat: RIFFFile.Format,
         chunks: [AnyRIFFFileChunk]
@@ -38,7 +38,7 @@ extension FileHandle {
         let riffChunk = try handle.parseRIFFChunk(
             in: riffDescriptor,
             endianness: endianness,
-            additionalChunkDefinitions: additionalChunkDefinitions
+            additionalChunkTypes: additionalChunkTypes
         )
         
         return (
@@ -159,17 +159,17 @@ extension FileHandle {
     func parseRIFFChunk(
         in descriptor: RIFFChunkDescriptor,
         endianness: NumberEndianness,
-        additionalChunkDefinitions: RIFFFileChunkDefinitions
+        additionalChunkTypes: RIFFFileChunkTypes
     ) throws(RIFFFileReadError) -> any RIFFFileChunk {
         do { try seek(toOffset: descriptor.chunkRange.lowerBound) }
         catch { throw .chunkLengthInvalid(forChunkID: descriptor.id.id) }
         
-        let chunkDefinitions: RIFFFileChunkDefinitions = .standard(merging: additionalChunkDefinitions)
-        let concreteType = chunkDefinitions[descriptor.id] ?? RIFFFile.GenericChunk.self
+        let chunkTypes: RIFFFileChunkTypes = .standard(merging: additionalChunkTypes)
+        let concreteType = chunkTypes[descriptor.id] ?? RIFFFile.GenericChunk.self
         let chunk: any RIFFFileChunk = try concreteType.init(
             handle: self,
             endianness: endianness,
-            additionalChunkDefinitions: additionalChunkDefinitions
+            additionalChunkTypes: additionalChunkTypes
         )
         
         // set file handle pointer to byte past end of chunk
@@ -182,7 +182,7 @@ extension FileHandle {
     public func parseRIFFSubchunks(
         in descriptor: RIFFChunkDescriptor,
         endianness: NumberEndianness,
-        additionalChunkDefinitions: RIFFFileChunkDefinitions
+        additionalChunkTypes: RIFFFileChunkTypes
     ) throws(RIFFFileReadError) -> [any RIFFFileChunk] {
         var chunks: [any RIFFFileChunk] = []
         
@@ -201,7 +201,7 @@ extension FileHandle {
             let chunk = try parseRIFFChunk(
                 in: subchunkDescriptor,
                 endianness: endianness,
-                additionalChunkDefinitions: additionalChunkDefinitions
+                additionalChunkTypes: additionalChunkTypes
             )
             chunks.append(chunk)
         }
