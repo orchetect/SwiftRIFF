@@ -34,7 +34,7 @@ extension AnyRIFFFileChunk: CustomStringConvertible {
     }
 }
 
-extension AnyRIFFFileChunk: RIFFFileChunk {
+extension AnyRIFFFileChunk /* : RIFFFileChunk */ {
     public var id: RIFFFileChunkID {
         base.id
     }

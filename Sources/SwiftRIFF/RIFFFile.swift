@@ -63,6 +63,6 @@ extension RIFFFile {
 
 extension RIFFFile {
     public var info: String {
-        chunks.map(\.info).joined(separator: "\n")
+        chunks.map(\.base).map(\.info).joined(separator: "\n")
     }
 }

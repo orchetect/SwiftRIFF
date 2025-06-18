@@ -9,7 +9,9 @@ import Foundation
 import OTCore
 
 extension FileHandle {
-    func parseRIFF() throws(RIFFFileReadError) -> (
+    func parseRIFF(
+        additionalChunkDefinitions: RIFFFileChunkDefinitions = [:]
+    ) throws(RIFFFileReadError) -> (
         riffFormat: RIFFFile.Format,
         chunks: [AnyRIFFFileChunk]
     ) {
@@ -32,8 +34,12 @@ extension FileHandle {
         } catch { throw .fileReadError(subError: error) }
         
         // advances 8 bytes
-        let riffDescriptor = try handle.readChunkDescriptor(endianness: endianness)
-        let riffChunk = try handle.readChunk(for: riffDescriptor, endianness: endianness)
+        let riffDescriptor = try handle.parseRIFFChunkDescriptor(endianness: endianness)
+        let riffChunk = try handle.parseRIFFChunk(
+            in: riffDescriptor,
+            endianness: endianness,
+            additionalChunkDefinitions: additionalChunkDefinitions
+        )
         
         return (
             riffFormat: riffFormat,
@@ -55,7 +61,8 @@ extension FileHandle {
         return riffFormat
     }
     
-    struct ChunkDescriptor {
+    // TODO: refactor to its own file
+    public struct RIFFChunkDescriptor {
         let id: RIFFFileChunkID
         let subID: String? // applicable to RIFF or LIST chunks only
         let length: UInt32
@@ -64,9 +71,11 @@ extension FileHandle {
         let dataRange: ClosedRange<UInt64>?
     }
     
-    func readChunkDescriptor(
+    /// Parses a RIFF chunk starting at the file handle's current offset.
+    /// Returns a descriptor with its details.
+    public func parseRIFFChunkDescriptor(
         endianness: NumberEndianness
-    ) throws(RIFFFileReadError) -> ChunkDescriptor {
+    ) throws(RIFFFileReadError) -> RIFFChunkDescriptor {
         let handle = self
         
         let startOffset: UInt64
@@ -147,7 +156,7 @@ extension FileHandle {
         do { try handle.seek(toOffset: chunkRange.upperBound + 1) }
         catch { throw .fileReadError(subError: error) }
         
-        return ChunkDescriptor(
+        return RIFFChunkDescriptor(
             id: id,
             subID: subID,
             length: dataLength,
@@ -157,69 +166,21 @@ extension FileHandle {
         )
     }
     
-    func readChunk(
-        for descriptor: ChunkDescriptor,
-        endianness: NumberEndianness
+    func parseRIFFChunk(
+        in descriptor: RIFFChunkDescriptor,
+        endianness: NumberEndianness,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions
     ) throws(RIFFFileReadError) -> any RIFFFileChunk {
-        let chunk: any RIFFFileChunk
-        
-        guard let dataRange = descriptor.dataRange else {
-            throw .chunkLengthInvalid(forChunkID: descriptor.id.id)
-        }
-        let postSubIDOffset = descriptor.subID != nil ? dataRange.lowerBound + 4 : dataRange.lowerBound
-        do {
-            try seek(toOffset: postSubIDOffset)
-        }
+        do { try seek(toOffset: descriptor.chunkRange.lowerBound) }
         catch { throw .chunkLengthInvalid(forChunkID: descriptor.id.id) }
         
-        switch descriptor.id {
-        case .riff:
-            // contains a 4-byte ASCII string as the first four bytes of its data block
-            guard let subID = descriptor.subID
-            else {
-                throw .missingChunkSubtypeIdentifier(chunkID: descriptor.id.id)
-            }
-            
-            // RIFF chunk can contain subchunks
-            // recursively parse child subchunks
-            let subchunks = try self.readSubchunks(in: descriptor, endianness: endianness)
-            chunk = RIFFFile.RIFFChunk(
-                subID: subID,
-                chunks: subchunks.asAnyRIFFFileChunks(),
-                range: descriptor.chunkRange,
-                dataRange: postSubIDOffset ... dataRange.upperBound
-            )
-            
-        case .list:
-            // contains a 4-byte ASCII string as the first four bytes of its data block
-            guard let subID = descriptor.subID
-            else {
-                throw .missingChunkSubtypeIdentifier(chunkID: descriptor.id.id)
-            }
-            
-            // LIST chunk can contain subchunks
-            // recursively parse child subchunks
-            let subchunks = try self.readSubchunks(in: descriptor, endianness: endianness)
-            chunk = RIFFFile.LISTChunk(
-                subID: subID,
-                chunks: subchunks.asAnyRIFFFileChunks(),
-                range: descriptor.chunkRange,
-                dataRange: postSubIDOffset ... dataRange.upperBound
-            )
-            
-        case .info:
-            chunk = RIFFFile.INFOChunk(
-                range: descriptor.chunkRange,
-                dataRange: descriptor.dataRange
-            )
-            
-        default:
-            chunk = RIFFFile.GenericChunk(
-                id: descriptor.id,
-                range: descriptor.chunkRange,
-                dataRange: descriptor.dataRange
-            )
-        }
+        let chunkDefinitions: RIFFFileChunkDefinitions = .standard(merging: additionalChunkDefinitions)
+        let concreteType = chunkDefinitions[descriptor.id] ?? RIFFFile.GenericChunk.self
+        let chunk: any RIFFFileChunk = try concreteType.init(
+            handle: self,
+            endianness: endianness,
+            additionalChunkDefinitions: additionalChunkDefinitions
+        )
         
         // set file handle pointer to byte past end of chunk
         do { try seek(toOffset: descriptor.chunkRange.upperBound + 1) }
@@ -228,9 +189,10 @@ extension FileHandle {
         return chunk
     }
     
-    func readSubchunks(
-        in descriptor: ChunkDescriptor,
-        endianness: NumberEndianness
+    func parseRIFFSubchunks(
+        in descriptor: RIFFChunkDescriptor,
+        endianness: NumberEndianness,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions
     ) throws(RIFFFileReadError) -> [any RIFFFileChunk] {
         var chunks: [any RIFFFileChunk] = []
         
@@ -244,9 +206,13 @@ extension FileHandle {
         catch { throw .chunkLengthInvalid(forChunkID: descriptor.id.id) }
         
         while try getOffset() < descriptor.chunkRange.upperBound {
-            let subchunkDescriptor = try readChunkDescriptor(endianness: endianness)
+            let subchunkDescriptor = try parseRIFFChunkDescriptor(endianness: endianness)
             
-            let chunk = try readChunk(for: subchunkDescriptor, endianness: endianness)
+            let chunk = try parseRIFFChunk(
+                in: subchunkDescriptor,
+                endianness: endianness,
+                additionalChunkDefinitions: additionalChunkDefinitions
+            )
             chunks.append(chunk)
         }
         

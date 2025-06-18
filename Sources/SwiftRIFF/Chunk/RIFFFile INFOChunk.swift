@@ -5,6 +5,9 @@
 //  Created by Steffan Andrews on 2025-06-17.
 //
 
+import Foundation
+import OTCore
+
 extension RIFFFile {
     /// The optional INFO chunk.
     ///
@@ -34,5 +37,23 @@ extension RIFFFile {
             self.range = range
             self.dataRange = dataRange
         }
+    }
+}
+
+extension RIFFFile.INFOChunk {
+    public init(
+        handle: FileHandle,
+        endianness: NumberEndianness,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions
+    ) throws(RIFFFileReadError) {
+        let descriptor = try handle.parseRIFFChunkDescriptor(endianness: endianness)
+        
+        guard descriptor.id == id else {
+            throw .invalidChunkTypeIdentifier(chunkID: descriptor.id.id)
+        }
+        
+        range = descriptor.chunkRange
+        
+        dataRange = descriptor.dataRange
     }
 }

@@ -5,6 +5,9 @@
 //  Created by Steffan Andrews on 2025-06-17.
 //
 
+import Foundation
+import OTCore
+
 public protocol RIFFFileChunk: Equatable, Hashable, Sendable {
     /// Chunk ID.
     ///
@@ -18,6 +21,12 @@ public protocol RIFFFileChunk: Equatable, Hashable, Sendable {
     
     /// The byte offset range of the chunk's usable data portion.
     var dataRange: ClosedRange<UInt64>? { get }
+    
+    init(
+        handle: FileHandle,
+        endianness: NumberEndianness,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions
+    ) throws(RIFFFileReadError)
 }
 
 // MARK: - Proxy properties for trait protocols
@@ -57,7 +66,8 @@ extension RIFFFileChunk {
         var out = "􀟈 \"\(id)\""
         if let subID = getSubID { out += " \"\(subID)\"" }
         out += " - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)\n"
-        out += getChunks.map(\.info)
+        out += getChunks.map(\.base)
+            .map(\.info)
             .joined(separator: "\n")
             .split(separator: "\n")
             .map { " 􀄵 \($0)" }

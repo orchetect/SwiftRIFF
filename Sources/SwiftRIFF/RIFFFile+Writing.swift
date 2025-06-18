@@ -37,11 +37,11 @@ extension FileHandle {
     /// Note that the `data` portion is the range not including the chunk ID, chunk length,
     /// and chunk sub-ID (if present).
     func writeRIFF(chunk: some RIFFFileChunk, data: Data, endianness: NumberEndianness) throws(RIFFFileWriteError) {
-        let existingChunkDescriptor: ChunkDescriptor
+        let existingChunkDescriptor: RIFFChunkDescriptor
         
         do {
             try seek(toOffset: chunk.range.lowerBound)
-            existingChunkDescriptor = try readChunkDescriptor(endianness: endianness)
+            existingChunkDescriptor = try parseRIFFChunkDescriptor(endianness: endianness)
         } catch { throw .fileWriteError(subError: error) }
         
         guard existingChunkDescriptor.chunkRange.count == chunk.range.count else {

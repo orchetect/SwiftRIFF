@@ -5,6 +5,9 @@
 //  Created by Steffan Andrews on 2025-06-17.
 //
 
+import Foundation
+import OTCore
+
 extension RIFFFile {
     /// A generic chunk.
     public struct GenericChunk: RIFFFileChunk {
@@ -23,5 +26,19 @@ extension RIFFFile {
             self.range = range
             self.dataRange = dataRange
         }
+    }
+}
+
+extension RIFFFile.GenericChunk {
+    public init(
+        handle: FileHandle,
+        endianness: NumberEndianness,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions
+    ) throws(RIFFFileReadError) {
+        let descriptor = try handle.parseRIFFChunkDescriptor(endianness: endianness)
+        
+        id = descriptor.id
+        range = descriptor.chunkRange
+        dataRange = descriptor.dataRange
     }
 }
