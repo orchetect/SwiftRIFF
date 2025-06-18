@@ -61,16 +61,6 @@ extension FileHandle {
         return riffFormat
     }
     
-    // TODO: refactor to its own file
-    public struct RIFFChunkDescriptor {
-        let id: RIFFFileChunkID
-        let subID: String? // applicable to RIFF or LIST chunks only
-        let length: UInt32
-        let chunkRange: ClosedRange<UInt64>
-        let encodedDataRange: ClosedRange<UInt64>?
-        let dataRange: ClosedRange<UInt64>?
-    }
-    
     /// Parses a RIFF chunk starting at the file handle's current offset.
     /// Returns a descriptor with its details.
     public func parseRIFFChunkDescriptor(
@@ -189,7 +179,7 @@ extension FileHandle {
         return chunk
     }
     
-    func parseRIFFSubchunks(
+    public func parseRIFFSubchunks(
         in descriptor: RIFFChunkDescriptor,
         endianness: NumberEndianness,
         additionalChunkDefinitions: RIFFFileChunkDefinitions
