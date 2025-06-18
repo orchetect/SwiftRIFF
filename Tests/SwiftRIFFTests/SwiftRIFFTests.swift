@@ -41,7 +41,7 @@ func parseRIFFDescriptor() async throws {
     
     let h = try FileHandle(forReadingFrom: tempFile)
     
-    let descriptor = try h.readChunkDescriptor(endianness: .littleEndian)
+    let descriptor = try h.parseRIFFChunkDescriptor(endianness: .littleEndian)
     
     #expect(descriptor.id == .riff)
     #expect(descriptor.subID == "WAVE")
@@ -60,7 +60,7 @@ func parseFMTChunkDescriptor() async throws {
     
     let h = try FileHandle(forReadingFrom: tempFile)
     
-    let descriptor = try h.readChunkDescriptor(endianness: .littleEndian)
+    let descriptor = try h.parseRIFFChunkDescriptor(endianness: .littleEndian)
     
     #expect(descriptor.id == .init(id: "fmt "))
     #expect(descriptor.subID == nil)
@@ -88,7 +88,7 @@ func parseRIFFFile() async throws {
     
     #expect(mainChunk.subID == "WAVE")
     #expect(mainChunk.range == 0 ... 47)
-    #expect(mainChunk.dataRange == 12 ... 47)
+    #expect(mainChunk.dataRange == 8 ... 47)
     #expect(mainChunk.chunks.count == 2)
     
     let fmtChunk = mainChunk.chunks[0]
@@ -115,7 +115,7 @@ func writeRIFFFileChunk() async throws {
     // read existing chunk
     var riffFile = try RIFFFile(url: tempFile)
     
-    var fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt "))
+    var fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt ")?.base)
     
     // generate new chunk
     let newFMTData: [UInt8] = [
@@ -132,10 +132,10 @@ func writeRIFFFileChunk() async throws {
     // reload file
     riffFile = try RIFFFile(url: tempFile)
     
-    fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt "))
+    fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt ")?.base)
     
     #expect(fmtChunk.id == .init(id: "fmt "))
-    #expect(fmtChunk.subID == nil)
+    #expect(fmtChunk.getSubID == nil)
     let fmtDataRangeExcludingSubID = try #require(fmtChunk.dataRangeExcludingSubID)
     
     let h = try FileHandle(forReadingFrom: tempFile)
