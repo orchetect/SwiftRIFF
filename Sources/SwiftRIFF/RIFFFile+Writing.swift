@@ -15,7 +15,7 @@ extension RIFFFile {
     /// 
     /// Note that the `data` portion is the range not including the chunk ID, chunk length,
     /// and chunk sub-ID (if present).
-    public func write(chunk: Chunk, data: Data) throws(RIFFFileWriteError) {
+    public func write(chunk: some RIFFFileChunk, data: Data) throws(RIFFFileWriteError) {
         guard let url else { throw .noFileURL }
         
         let h: FileHandle
@@ -28,13 +28,15 @@ extension RIFFFile {
 }
 
 extension FileHandle {
+    // TODO: this needs rethinking, since RIFFFileChunk can contain subchunks but we're also asking for a Data parameter -- these two conflict with each other. Currently we're just ignoring subchunks that may be present in the `chunk`.
+    
     /// Replaces the chunk in the file on disk with the new chunk supplied.
     ///
     /// The total byte size of the existing chunk must match the byte size of the new chunk replacing it.
     ///
     /// Note that the `data` portion is the range not including the chunk ID, chunk length,
     /// and chunk sub-ID (if present).
-    func writeRIFF(chunk: RIFFFile.Chunk, data: Data, endianness: NumberEndianness) throws(RIFFFileWriteError) {
+    func writeRIFF(chunk: some RIFFFileChunk, data: Data, endianness: NumberEndianness) throws(RIFFFileWriteError) {
         let existingChunkDescriptor: ChunkDescriptor
         
         do {
@@ -57,11 +59,11 @@ extension FileHandle {
         
         // prepare bytes ahead of time before writing
         
-        guard let chunkIDData = chunk.id.rawValue.data(using: .ascii),
+        guard let chunkIDData = chunk.id.id.data(using: .ascii),
               chunkIDData.count == 4
         else { throw .invalidChunkID }
         
-        let subID = chunk.subID?.data(using: .ascii)
+        let subID = chunk.getSubID?.data(using: .ascii)
         if let subID { guard subID.count == 4 else { throw .invalidChunkSubID } }
         
         let chunkLengthData = UInt32(chunk.dataRange?.count ?? 0).toData(endianness)

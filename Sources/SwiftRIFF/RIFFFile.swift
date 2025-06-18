@@ -31,7 +31,7 @@ public struct RIFFFile {
     public let riffFormat: Format
     
     /// Chunks contained in the file.
-    public let chunks: [Chunk]
+    public let chunks: [AnyRIFFFileChunk]
 }
 
 extension RIFFFile: Equatable { }
