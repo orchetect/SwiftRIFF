@@ -41,13 +41,16 @@ extension RIFFFile: Hashable { }
 extension RIFFFile: Sendable { }
 
 extension RIFFFile {
-    public init(url: URL) throws(RIFFFileReadError) {
+    public init(
+        url: URL,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions = [:]
+    ) throws(RIFFFileReadError) {
         let h: FileHandle
         do {
             h = try FileHandle(forReadingFrom: url)
         } catch { throw .fileReadError(subError: error) }
         
-        try self.init(handle: h, url: url)
+        try self.init(handle: h, url: url, additionalChunkDefinitions: additionalChunkDefinitions)
     }
     
     // TODO: add parser that can parse `Data` in memory without requiring a FileHandle
@@ -55,9 +58,13 @@ extension RIFFFile {
     //
     // }
     
-    public init(handle: FileHandle, url: URL? = nil) throws(RIFFFileReadError) {
+    public init(
+        handle: FileHandle,
+        url: URL? = nil,
+        additionalChunkDefinitions: RIFFFileChunkDefinitions = [:]
+    ) throws(RIFFFileReadError) {
         self.url = url
-        (riffFormat, chunks) = try handle.parseRIFF()
+        (riffFormat, chunks) = try handle.parseRIFF(additionalChunkDefinitions: additionalChunkDefinitions)
     }
 }
 
