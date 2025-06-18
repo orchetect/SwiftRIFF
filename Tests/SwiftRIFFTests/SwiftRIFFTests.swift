@@ -62,7 +62,7 @@ func parseFMTChunkDescriptor() async throws {
     
     let descriptor = try h.readChunkDescriptor(endianness: .littleEndian)
     
-    #expect(descriptor.id == .generic(identifier: "fmt "))
+    #expect(descriptor.id == .init(id: "fmt "))
     #expect(descriptor.subID == nil)
     #expect(descriptor.length == 16)
     #expect(descriptor.chunkRange == 0 ... 23)
@@ -84,25 +84,22 @@ func parseRIFFFile() async throws {
     #expect(riffFile.chunks.count == 1)
     
     let mainChunk = riffFile.chunks[0]
-    guard case let .riff(riffSubID, chunks, riffRange, riffDataRange) = mainChunk
-    else { Issue.record(); return }
+    #expect(mainChunk.id == .riff)
     
-    #expect(riffSubID == "WAVE")
-    #expect(riffRange == 0 ... 47)
-    #expect(riffDataRange == 12 ... 47)
-    #expect(chunks.count == 2)
+    #expect(mainChunk.subID == "WAVE")
+    #expect(mainChunk.range == 0 ... 47)
+    #expect(mainChunk.dataRange == 12 ... 47)
+    #expect(mainChunk.chunks.count == 2)
     
-    guard case let .generic(fmtID, fmtRange, fmtDataRange) = chunks[0]
-    else { Issue.record(); return }
-    #expect(fmtID == .generic(identifier: "fmt "))
-    #expect(fmtRange == 12 ... 35)
-    #expect(fmtDataRange == 20 ... 35)
+    let fmtChunk = mainChunk.chunks[0]
+    #expect(fmtChunk.id == .init(id: "fmt "))
+    #expect(fmtChunk.range == 12 ... 35)
+    #expect(fmtChunk.dataRange == 20 ... 35)
     
-    guard case let .generic(dataID, dataRange, dataDataRange) = chunks[1]
-    else { Issue.record(); return }
-    #expect(dataID == .generic(identifier: "data"))
-    #expect(dataRange == 36 ... 46)
-    #expect(dataDataRange == 44 ... 46)
+    let dataChunk = mainChunk.chunks[1]
+    #expect(dataChunk.id == .init(id: "data"))
+    #expect(dataChunk.range == 36 ... 46)
+    #expect(dataChunk.dataRange == 44 ... 46)
     
     // output info block
     print(riffFile.info)
@@ -137,7 +134,7 @@ func writeRIFFFileChunk() async throws {
     
     fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt "))
     
-    #expect(fmtChunk.id == .generic(identifier: "fmt "))
+    #expect(fmtChunk.id == .init(id: "fmt "))
     #expect(fmtChunk.subID == nil)
     let fmtDataRangeExcludingSubID = try #require(fmtChunk.dataRangeExcludingSubID)
     
