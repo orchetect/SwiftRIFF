@@ -12,12 +12,13 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/orchetect/OTCore", from: "1.7.6")
+        .package(url: "https://github.com/orchetect/OTCore", from: "1.7.6"),
+        .package(url: "https://github.com/orchetect/SwiftRadix", from: "1.3.2")
     ],
     targets: [
         .target(
             name: "SwiftRIFF",
-            dependencies: ["OTCore"]
+            dependencies: ["OTCore", "SwiftRadix"]
         ),
         .testTarget(
             name: "SwiftRIFFTests",

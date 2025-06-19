@@ -7,6 +7,7 @@
 
 import Foundation
 import OTCore
+import SwiftRadix
 
 public protocol RIFFFileChunk: Equatable, Hashable, Sendable {
     /// Chunk ID.
@@ -65,12 +66,19 @@ extension RIFFFileChunk {
     public var info: String {
         var out = "􀟈 \"\(id)\""
         if let subID = getSubID { out += " \"\(subID)\"" }
-        out += " - File Byte Offset Range: \(range.lowerBound) ... \(range.upperBound)\n"
+        out += "\n"
+        
+        out += "- Size: \(range.count) bytes\n"
+        out += "- Byte Range (Hex): \(range.lowerBound.hex.stringValue(padToEvery: 2, prefix: false)) ... \(range.upperBound.hex.stringValue(padToEvery: 2, prefix: false))\n"
+        out += "- Byte Range (Int): \(range.lowerBound) ... \(range.upperBound)\n"
+        
         out += getChunks.map(\.base)
             .map(\.info)
-            .joined(separator: "\n")
-            .split(separator: "\n")
-            .map { " 􀄵 \($0)" }
+            .map {
+                var lines = $0.split(separator: "\n")
+                let firstLine = lines.removeFirst()
+                return "􀄵 \(firstLine)\n" + (lines.map { "   \($0)" }.joined(separator: "\n"))
+            }
             .joined(separator: "\n")
         return out
     }

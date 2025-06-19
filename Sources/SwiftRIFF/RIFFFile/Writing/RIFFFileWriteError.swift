@@ -23,10 +23,10 @@ extension RIFFFileWriteError {
         switch self {
         case let .fileReadError(subError: subError):
             "File read error"
-                + (subError != nil ? " \(subError!.localizedDescription)" : ".")
+                + (subError != nil ? ": \(subError!.localizedDescription)" : ".")
         case let .fileWriteError(subError: subError):
             "File write error"
-                + (subError != nil ? " \(subError!.localizedDescription)" : ".")
+                + (subError != nil ? ": \(subError!.localizedDescription)" : ".")
         case .noFileURL:
             "No file URL specified."
         case .newChunkDoesNotMatchExistingChunkSize:
