@@ -1,8 +1,7 @@
 //
 //  RIFFFile LISTChunk.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-17.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation

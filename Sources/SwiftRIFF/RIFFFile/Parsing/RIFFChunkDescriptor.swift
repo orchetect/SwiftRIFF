@@ -1,8 +1,7 @@
 //
 //  RIFFChunkDescriptor.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-17.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 /// Lightweight descriptor for a RIFF file chunk including its identity and byte ranges.

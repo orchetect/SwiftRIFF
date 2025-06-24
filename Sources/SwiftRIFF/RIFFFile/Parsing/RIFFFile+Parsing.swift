@@ -1,8 +1,7 @@
 //
 //  RIFFFile+Parsing.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-17.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -109,8 +108,8 @@ extension FileHandle {
         catch { throw .fileReadError(subError: error) }
         
         let dataRange: ClosedRange<UInt64>? = dataLength == 0
-        ? nil
-        : dataOffset ... dataOffset + UInt64(dataLength) - 1
+            ? nil
+            : dataOffset ... dataOffset + UInt64(dataLength) - 1
         
         // pad if data count is odd
         let encodedDataRange: ClosedRange<UInt64>? = if let dataRange {
@@ -138,6 +137,7 @@ extension FileHandle {
             
         case .info:
             subID = nil
+
         default:
             subID = nil
         }
@@ -192,8 +192,7 @@ extension FileHandle {
         let postSubIDOffset = descriptor.subID != nil ? dataRange.lowerBound + 4 : dataRange.lowerBound
         do {
             try seek(toOffset: postSubIDOffset)
-        }
-        catch { throw .chunkLengthInvalid(forChunkID: descriptor.id.id) }
+        } catch { throw .chunkLengthInvalid(forChunkID: descriptor.id.id) }
         
         while try getOffset() < descriptor.chunkRange.upperBound {
             let subchunkDescriptor = try parseRIFFChunkDescriptor(endianness: endianness)

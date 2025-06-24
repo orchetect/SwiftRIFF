@@ -1,8 +1,7 @@
 //
 //  RIFFFileReadError.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-16.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -21,7 +20,7 @@ public enum RIFFFileReadError: LocalizedError {
 extension RIFFFileReadError {
     public var errorDescription: String? {
         switch self {
-        case let .fileReadError(subError: subError): 
+        case let .fileReadError(subError: subError):
             "File read error"
                 + (subError != nil ? " \(subError!.localizedDescription)" : ".")
         case .unsupportedRIF2Type:
@@ -36,7 +35,7 @@ extension RIFFFileReadError {
             "Missing chunk subtype identifier for chunk \"\(chunkID)\"."
         case let .invalidChunkTypeIdentifier(chunkID: chunkID):
             "Invalid chunk type identifier"
-                + (chunkID != nil ? ": \(chunkID!)\"" : "" )
+                + (chunkID != nil ? ": \(chunkID!)\"" : "")
                 + "."
         case let .chunkLengthInvalid(forChunkID: chunkID):
             "Chunk \"\(chunkID)\" length invalid."

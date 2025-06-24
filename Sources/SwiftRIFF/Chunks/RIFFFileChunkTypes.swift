@@ -1,8 +1,7 @@
 //
 //  RIFFFileChunkTypes.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-17.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 public typealias RIFFFileChunkTypes = [RIFFFileChunkID: any RIFFFileChunk.Type]
@@ -20,6 +19,6 @@ extension RIFFFileChunkTypes {
     
     /// Merge custom RIFF file chunk types into the standard set.
     public static func standard(merging other: Self) -> Self {
-        Self.standard.merging(other) { old, new in new }
+        standard.merging(other) { old, new in new }
     }
 }

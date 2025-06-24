@@ -1,8 +1,7 @@
 //
 //  RIFFFile+Writing.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-17.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -12,7 +11,7 @@ extension RIFFFile {
     /// Replaces the chunk in the file on disk with the new chunk supplied.
     ///
     /// The total byte size of the existing chunk must match the byte size of the new chunk replacing it.
-    /// 
+    ///
     /// Note that the `data` portion is the range not including the chunk ID, chunk length,
     /// and chunk sub-ID (if present).
     public func write(chunk: some RIFFFileChunk, data: Data) throws(RIFFFileWriteError) {

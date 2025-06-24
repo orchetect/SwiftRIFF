@@ -1,8 +1,7 @@
 //
 //  RIFFFileChunk.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-17.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -69,7 +68,11 @@ extension RIFFFileChunk {
         out += "\n"
         
         out += "- Size: \(range.count) bytes\n"
-        out += "- Byte Range (Hex): \(range.lowerBound.hex.stringValue(padToEvery: 2, prefix: false)) ... \(range.upperBound.hex.stringValue(padToEvery: 2, prefix: false))\n"
+        
+        let hexLowerBound = range.lowerBound.hex.stringValue(padToEvery: 2, prefix: false)
+        let hexUpperBound = range.upperBound.hex.stringValue(padToEvery: 2, prefix: false)
+        out += "- Byte Range (Hex): \(hexLowerBound) ... \(hexUpperBound)\n"
+        
         out += "- Byte Range (Int): \(range.lowerBound) ... \(range.upperBound)\n"
         
         out += getChunks.map(\.base)
