@@ -4,9 +4,9 @@
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
+import SwiftRadix
 import SwiftRIFFWAV
 import SwiftUI
-import SwiftRadix
 import TimecodeKitCore
 
 struct BextInfoView: View {

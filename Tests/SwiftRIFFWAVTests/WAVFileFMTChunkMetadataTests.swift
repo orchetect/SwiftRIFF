@@ -4,8 +4,8 @@
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
-@testable import SwiftRIFFWAV
 import Foundation
+@testable import SwiftRIFFWAV
 import Testing
 
 @Suite struct WAVFileFMTChunkMetadataTests {

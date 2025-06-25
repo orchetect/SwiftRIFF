@@ -4,9 +4,9 @@
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
-@testable import SwiftRIFFWAV
-import SwiftRIFF
 import Foundation
+import SwiftRIFF
+@testable import SwiftRIFFWAV
 import Testing
 
 @Suite struct WAVFileTests {
@@ -89,7 +89,7 @@ import Testing
             channels: 6
         )
         
-        #expect(throws: RIFFFileWriteError.self /* .newChunkDoesNotMatchExistingChunkSize */) {
+        #expect(throws: RIFFFileWriteError.self /* .newChunkDoesNotMatchExistingChunkSize */ ) {
             try wavFile.write(format: newFMT)
         }
         
@@ -128,7 +128,7 @@ import Testing
         #expect(bext.originatorReference == "aaiRTZy9QKVk")
         #expect(bext.originationDate == "2025-06-18")
         #expect(bext.originationTime == "16:21:34")
-        #expect(bext.timeReference == 0x000000000A4CB800)
+        #expect(bext.timeReference == 0x0000_0000_0A4C_B800)
         #expect(bext.version == 1)
         #expect(bext.umid == Data([
             0x06, 0x0A, 0x2B, 0x34, 0x01, 0x01, 0x01, 0x05,
@@ -166,7 +166,7 @@ import Testing
             originatorReference: "ZYXWVUTSRQPONMLKJIHGFEDCBA987654", // 32 chars
             originationDate: "2035-02-14",
             originationTime: "17:48:02",
-            timeReference: 0x000000000B00E500,
+            timeReference: 0x0000_0000_0B00_E500,
             version: 2,
             umid: Data(repeating: 0x00, count: 64), // TODO: replace with valid SMPTE UMID bytes
             loudnessValue: 0x1234,

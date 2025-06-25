@@ -311,11 +311,11 @@ extension Data {
     /// Pads data bytes to an exact length by either adding pad bytes or truncating the bytes as necessary.
     func padding(toLength: Int, withPad: UInt8) -> Data {
         if count > toLength {
-            return prefix(toLength)
+            prefix(toLength)
         } else if count == toLength {
-            return self
+            self
         } else {
-            return self + Data(repeating: 0x00, count: toLength - count)
+            self + Data(repeating: 0x00, count: toLength - count)
         }
     }
     

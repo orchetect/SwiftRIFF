@@ -60,7 +60,7 @@ enum SampleBWAV {
         // start of file
         0x52, 0x49, 0x46, 0x46, // "RIFF"
         0xCC, 0x02, 0x00, 0x00, // Total file length minus 8 bytes == int 716
-        0x57, 0x41, 0x56, 0x45, // "WAVE" file type
+        0x57, 0x41, 0x56, 0x45 // "WAVE" file type
     ] + junkChunkBytes + bextChunkBytes + fmtChunkBytes + dataChunkBytes
     // note that BWAV files often follow with numerous small additional metadata chunks after the data chunk
     
