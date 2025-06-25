@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// Error cases returned by `RIFFile` read/parse methods.
 public enum RIFFFileReadError: LocalizedError {
     case fileReadError(subError: Error?)
     case unsupportedRIF2Type
@@ -26,7 +27,7 @@ extension RIFFFileReadError {
         case .unsupportedRIF2Type:
             "Unsupported RIF2 type. Support may be added in future."
         case .missingRIFFHeader:
-            "Missing RIFx identifier at file start. File may not be a RIFF/RIFX/RIF2 file."
+            "Missing RIFF identifier at file start. File may not be a RIFF/RIFX/RF64/RIF2 file."
         case .fileLengthInvalid:
             "File length invalid."
         case .missingFileTypeIdentifier:

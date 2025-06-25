@@ -62,6 +62,7 @@ extension RIFFFileChunk {
         return proposedLowerBound ... dataRange.upperBound
     }
     
+    /// Returns a hierarchical info string describing the RIFF file's basic structure, suitable for debugging.
     public var info: String {
         var out = "􀟈 \"\(id)\""
         if let subID = getSubID { out += " \"\(subID)\"" }
@@ -90,12 +91,14 @@ extension RIFFFileChunk {
 // MARK: - Type Erasure
 
 extension RIFFFileChunk {
+    /// Convenience to return the RIFF file chunk wrapped in a type-erased ``AnyRIFFFileChunk`` box.
     public func asAnyRIFFFileChunk() -> AnyRIFFFileChunk {
         AnyRIFFFileChunk(base: self)
     }
 }
 
 extension Sequence<any RIFFFileChunk> {
+    /// Convenience to return the RIFF file chunk elements wrapped in type-erased ``AnyRIFFFileChunk`` boxes.
     public func asAnyRIFFFileChunks() -> [AnyRIFFFileChunk] {
         map(AnyRIFFFileChunk.init(base:))
     }
@@ -120,3 +123,5 @@ extension Sequence<AnyRIFFFileChunk> {
         first { $0.id == id }
     }
 }
+
+// TODO: Add sequence filter/first methods for `any RIFFFileChunk`

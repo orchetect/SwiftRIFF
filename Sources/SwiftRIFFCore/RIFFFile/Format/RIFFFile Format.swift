@@ -7,7 +7,9 @@
 import OTCore
 
 extension RIFFFile {
-    /// RIFx container format.
+    /// RIFF-derived container format.
+    ///
+    /// The raw value is written as the first four bytes of the file in order to identify the file format.
     public enum Format: String {
         /// RIFF container.
         ///

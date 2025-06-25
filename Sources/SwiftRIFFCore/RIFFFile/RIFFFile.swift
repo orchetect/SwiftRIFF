@@ -7,9 +7,9 @@
 import Foundation
 import OTCore
 
-/// A view into a RIFx File (RIFF, RIFX, RIF2).
+/// A view into a RIFF-based file (RIFF, RIFX, RF64, RIF2).
 ///
-/// Parses an existing RIFx file, and supports a limited set of write operations.
+/// Parses an existing RIFF-based file, and supports a limited set of write operations.
 ///
 /// Resource Interchange File Format (RIFF) is a generic file container format for storing data in tagged chunks.
 /// It is historically used primarily for audio and video but can be used for nearly any content.
@@ -40,6 +40,11 @@ extension RIFFFile: Hashable { }
 extension RIFFFile: Sendable { }
 
 extension RIFFFile {
+    /// Initialize by parsing a RIFF file on disk.
+    ///
+    /// - Parameters:
+    ///   - url: File URL to the RIFF file on disk.
+    ///   - additionalChunkTypes: Optionally supply custom chunk types to the parser.
     public init(
         url: URL,
         additionalChunkTypes: RIFFFileChunkTypes = [:]
@@ -57,6 +62,12 @@ extension RIFFFile {
     //
     // }
     
+    /// Initialize by parsing a RIFF file on disk.
+    ///
+    /// - Parameters:
+    ///   - handle: File handle pointing to a RIFF file on disk. Ensure the file handle was created for reading from a file URL.
+    ///   - url: File URL to the RIFF file on disk. This must be the same file URL used to open the file handle.
+    ///   - additionalChunkTypes: Optionally supply custom chunk types to the parser.
     public init(
         handle: FileHandle,
         url: URL? = nil,
@@ -68,6 +79,7 @@ extension RIFFFile {
 }
 
 extension RIFFFile {
+    /// Returns a hierarchical info string describing the RIFF file's basic structure, suitable for debugging.
     public var info: String {
         chunks.map(\.base).map(\.info).joined(separator: "\n")
     }

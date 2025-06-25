@@ -4,6 +4,8 @@
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
+/// Dictionary keyed by 4-character RIFF file ASCII string chunk ID, specifying the concrete type that
+/// should be used to parse RIFF file chunks matching that identifier.
 public typealias RIFFFileChunkTypes = [RIFFFileChunkID: any RIFFFileChunk.Type]
 
 extension RIFFFileChunkTypes {

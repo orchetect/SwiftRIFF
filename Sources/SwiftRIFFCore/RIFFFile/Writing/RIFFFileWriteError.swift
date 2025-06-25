@@ -6,6 +6,7 @@
 
 import Foundation
 
+/// Error cases returned by `RIFFile` write methods.
 public enum RIFFFileWriteError: LocalizedError {
     case fileReadError(subError: Error?)
     case fileWriteError(subError: Error?)

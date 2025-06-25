@@ -8,7 +8,13 @@ import Foundation
 import OTCore
 
 extension RIFFFile {
-    /// A generic chunk.
+    /// Generic RIFF file chunk.
+    ///
+    /// This abstraction may be used to read any RIFF file chunk, and can be used in the absence of a
+    /// specific chunk parser implementation. Basic chunk types have been implemented, including RIFF, LIST, INFO and JUNK.
+    ///
+    /// Custom chunks may be implemented by conforming to the `RIFFFileChunk` protocol and passing the types to `RIFFile`'s
+    /// `additionalChunkTypes` init parameter so that the parser is able to handle them.
     public struct GenericChunk: RIFFFileChunk {
         public var id: RIFFFileChunkID
         public var range: ClosedRange<UInt64>

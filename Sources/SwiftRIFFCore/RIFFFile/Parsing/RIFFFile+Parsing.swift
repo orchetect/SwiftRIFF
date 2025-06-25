@@ -8,6 +8,7 @@ import Foundation
 import OTCore
 
 extension FileHandle {
+    /// Parses the file and returns the specific RIFF file format and its chunk information.
     func parseRIFF(
         additionalChunkTypes: RIFFFileChunkTypes = [:]
     ) throws(RIFFFileReadError) -> (
@@ -46,6 +47,7 @@ extension FileHandle {
         )
     }
     
+    /// Parses the specific RIFF file format ad-hoc.
     func parseRIFFFormat() throws(RIFFFileReadError) -> RIFFFile.Format {
         do {
             try seek(toOffset: 0)
@@ -156,6 +158,7 @@ extension FileHandle {
         )
     }
     
+    /// Parses a chunk and its data and returns a concrete type matching the chunk type.
     func parseRIFFChunk(
         in descriptor: RIFFChunkDescriptor,
         endianness: NumberEndianness,
@@ -179,6 +182,8 @@ extension FileHandle {
         return chunk
     }
     
+    /// Parses subchunks contained within a chunk.
+    /// Not all chunk types support subchunks. Notably, the `RIFF` and `LIST` chunks contain subchunks.
     public func parseRIFFSubchunks(
         in descriptor: RIFFChunkDescriptor,
         endianness: NumberEndianness,
@@ -210,7 +215,7 @@ extension FileHandle {
     
     // MARK: - Utilities
     
-    /// Wrapper for `offset()` to throw our own error.
+    /// Wrapper for `FileHandle` `offset()` to throw our own error.
     func getOffset() throws(RIFFFileReadError) -> UInt64 {
         let offset: UInt64
         do { offset = try self.offset() }
@@ -218,6 +223,7 @@ extension FileHandle {
         return offset
     }
     
+    /// Returns the byte offset of the last byte in the file, effectively returning the file's byte count (length).
     func getEndOffset() throws -> UInt64 {
         let currentOffset = try offset()
         try seekToEnd()
