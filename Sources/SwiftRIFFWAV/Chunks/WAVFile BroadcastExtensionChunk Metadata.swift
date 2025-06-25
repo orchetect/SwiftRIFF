@@ -7,7 +7,7 @@
 import Foundation
 import OTCore
 import SwiftRIFFCore
-import TimecodeKit
+import TimecodeKitCore
 
 extension WAVFile.BroadcastExtensionChunk {
     public struct Metadata {
