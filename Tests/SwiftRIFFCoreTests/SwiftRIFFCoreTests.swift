@@ -1,11 +1,11 @@
 //
-//  SwiftRIFFTests.swift
+//  SwiftRIFFCoreTests.swift
 //  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
-@testable import SwiftRIFF
+@testable import SwiftRIFFCore
 import Testing
 
 private enum SampleRIFF {

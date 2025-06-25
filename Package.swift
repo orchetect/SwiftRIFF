@@ -6,10 +6,7 @@ let package = Package(
     name: "SwiftRIFF",
     platforms: [.macOS(.v11), .iOS(.v14)],
     products: [
-        .library(
-            name: "SwiftRIFF",
-            targets: ["SwiftRIFF"]
-        )
+        .library(name: "SwiftRIFFCore", targets: ["SwiftRIFFCore"])
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/OTCore", from: "1.7.6"),
@@ -17,12 +14,12 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "SwiftRIFF",
+            name: "SwiftRIFFCore",
             dependencies: ["OTCore", "SwiftRadix"]
         ),
         .testTarget(
-            name: "SwiftRIFFTests",
-            dependencies: ["SwiftRIFF", "OTCore"]
+            name: "SwiftRIFFCoreTests",
+            dependencies: ["SwiftRIFFCore", "OTCore"]
         )
     ]
 )
