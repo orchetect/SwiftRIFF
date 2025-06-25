@@ -220,20 +220,21 @@ extension WAVFile.BroadcastExtensionChunk.Metadata {
         let maxShortTermLoudnessBytes = maxShortTermLoudness.toData(endianness).bytes
         let reservedBytes = Data(repeating: 0x00, count: 180)
         
-        var bytes: [UInt8] = descriptionBytes
-            + originatorBytes
-            + originatorReferenceBytes
-            + originationDateBytes
-            + originationTimeBytes
-            + timeReferenceBytes
-            + versionBytes
-            + umidBytes
-            + loudnessValueBytes
-            + loudnessRangeBytes
-            + maxTruePeakLevelBytes
-            + maxMomentaryLoudnessBytes
-            + maxShortTermLoudnessBytes
-            + reservedBytes
+        var bytes: [UInt8] = []
+        bytes += descriptionBytes
+        bytes += originatorBytes
+        bytes += originatorReferenceBytes
+        bytes += originationDateBytes
+        bytes += originationTimeBytes
+        bytes += timeReferenceBytes
+        bytes += versionBytes
+        bytes += umidBytes
+        bytes += loudnessValueBytes
+        bytes += loudnessRangeBytes
+        bytes += maxTruePeakLevelBytes
+        bytes += maxMomentaryLoudnessBytes
+        bytes += maxShortTermLoudnessBytes
+        bytes += reservedBytes
         
         // chunk data up to Coding History (variable length of 0 or more bytes) should be 602 bytes
         assert(bytes.count == 602)
