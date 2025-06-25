@@ -54,7 +54,7 @@ extension AnyRIFFFileChunk /* : RIFFFileChunkHasSubID */ {
 }
 
 extension AnyRIFFFileChunk /* : RIFFFileChunkHasChunks */ {
-    public var chunks: [AnyRIFFFileChunk] {
+    public var chunks: [AnyRIFFFileChunk]? {
         base.getChunks
     }
 }

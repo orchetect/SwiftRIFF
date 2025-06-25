@@ -41,8 +41,8 @@ extension RIFFFileChunk {
     
     /// Convenience:
     /// Conditionally casts as ``RIFFFileChunkHasChunks`` and returns `chunks` if successful.
-    public var getChunks: [AnyRIFFFileChunk] {
-        guard let self = self as? any RIFFFileChunkHasChunks else { return [] }
+    public var getChunks: [AnyRIFFFileChunk]? {
+        guard let self = self as? any RIFFFileChunkHasChunks else { return nil }
         return self.chunks
     }
 }
@@ -76,7 +76,7 @@ extension RIFFFileChunk {
         
         out += "- Byte Range (Int): \(range.lowerBound) ... \(range.upperBound)\n"
         
-        out += getChunks.map(\.base)
+        out += (getChunks ?? []).map(\.base)
             .map(\.info)
             .map {
                 var lines = $0.split(separator: "\n")

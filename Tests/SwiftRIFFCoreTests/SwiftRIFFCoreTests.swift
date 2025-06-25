@@ -95,14 +95,14 @@ func parseRIFFFile() async throws {
     #expect(mainChunk.subID == "WAVE")
     #expect(mainChunk.range == 0 ... 47)
     #expect(mainChunk.dataRange == 8 ... 47)
-    #expect(mainChunk.chunks.count == 2)
+    #expect(mainChunk.chunks?.count == 2)
     
-    let fmtChunk = mainChunk.chunks[0]
+    let fmtChunk = try #require(mainChunk.chunks?[0])
     #expect(fmtChunk.id == .init(id: "fmt "))
     #expect(fmtChunk.range == 12 ... 35)
     #expect(fmtChunk.dataRange == 20 ... 35)
     
-    let dataChunk = mainChunk.chunks[1]
+    let dataChunk = try #require(mainChunk.chunks?[1])
     #expect(dataChunk.id == .init(id: "data"))
     #expect(dataChunk.range == 36 ... 46)
     #expect(dataChunk.dataRange == 44 ... 46)
@@ -121,7 +121,7 @@ func writeRIFFFileChunk() async throws {
     // read existing chunk
     var riffFile = try RIFFFile(url: tempFile)
     
-    var fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt ")?.base)
+    var fmtChunk = try #require(riffFile.chunks[0].chunks?.first(id: "fmt ")?.base)
     
     // generate new chunk
     let newFMTData: [UInt8] = [
@@ -138,7 +138,7 @@ func writeRIFFFileChunk() async throws {
     // reload file
     riffFile = try RIFFFile(url: tempFile)
     
-    fmtChunk = try #require(riffFile.chunks[0].chunks.first(id: "fmt ")?.base)
+    fmtChunk = try #require(riffFile.chunks[0].chunks?.first(id: "fmt ")?.base)
     
     #expect(fmtChunk.id == .init(id: "fmt "))
     #expect(fmtChunk.getSubID == nil)
