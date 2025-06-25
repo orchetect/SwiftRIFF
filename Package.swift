@@ -6,6 +6,7 @@ let package = Package(
     name: "SwiftRIFF",
     platforms: [.macOS(.v11), .iOS(.v14)],
     products: [
+        .library(name: "SwiftRIFF", targets: ["SwiftRIFFCore"]),
         .library(name: "SwiftRIFFCore", targets: ["SwiftRIFFCore"])
     ],
     dependencies: [
