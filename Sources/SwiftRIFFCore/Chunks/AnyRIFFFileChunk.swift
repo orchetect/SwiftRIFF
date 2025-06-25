@@ -58,3 +58,27 @@ extension AnyRIFFFileChunk /* : RIFFFileChunkHasChunks */ {
         base.getChunks
     }
 }
+
+// MARK: - Collection Methods
+
+extension Sequence<AnyRIFFFileChunk> {
+    /// Returns an array containing chunk(s) matching the given chunk ID string.
+    public func filter(id: String) -> [Element] {
+        filter { $0.id.id == id }
+    }
+    
+    /// Returns an array containing chunk(s) matching the given chunk IDs.
+    public func filter(id: RIFFFileChunkID) -> [Element] {
+        filter { $0.id == id }
+    }
+    
+    /// Returns the first chunk matching the given chunk ID string.
+    public func first(id: String) -> Element? {
+        first { $0.id.id == id }
+    }
+    
+    /// Returns the first chunk matching the given chunk ID.
+    public func first(id: RIFFFileChunkID) -> Element? {
+        first { $0.id == id }
+    }
+}
