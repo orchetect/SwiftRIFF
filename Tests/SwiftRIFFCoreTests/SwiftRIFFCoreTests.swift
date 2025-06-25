@@ -38,6 +38,7 @@ private enum SampleRIFF {
     ]
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 @Test
 func parseRIFFDescriptor() async throws {
     // write to file on disk so we can parse it
@@ -57,6 +58,7 @@ func parseRIFFDescriptor() async throws {
     #expect(descriptor.dataRange == 8 ... 47)
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 @Test
 func parseFMTChunkDescriptor() async throws {
     // write to file on disk so we can parse it
@@ -76,6 +78,7 @@ func parseFMTChunkDescriptor() async throws {
     #expect(descriptor.dataRange == 8 ... 23)
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 @Test
 func parseRIFFFile() async throws {
     // write to file on disk so we can parse it
@@ -111,6 +114,7 @@ func parseRIFFFile() async throws {
     print(riffFile.info)
 }
 
+@available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
 @Test
 func writeRIFFFileChunk() async throws {
     // write to file on disk so we can parse it

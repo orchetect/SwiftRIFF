@@ -5,11 +5,12 @@
 //
 
 import Foundation
-import SwiftRIFF
+import SwiftRIFFCore
 @testable import SwiftRIFFWAV
 import Testing
 
 @Suite struct WAVFileTests {
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func wavFile() async throws {
         // write to file on disk so we can parse it
@@ -41,6 +42,7 @@ import Testing
         #expect(data == Data([0x01, 0x02, 0x03]))
     }
     
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func fmtChunkWrite_SameChunkSizes() async throws {
         // write to file on disk so we can parse it
@@ -72,6 +74,7 @@ import Testing
         #expect(format.channels == 6)
     }
     
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func fmtChunkWrite_NewChunkSmallerSize() async throws {
         // write to file on disk so we can parse it
@@ -111,6 +114,7 @@ import Testing
         #expect(format.extraBytes == Data([0x02, 0x00, 0x05, 0x06]))
     }
     
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func bextChunkRead() async throws {
         // write to file on disk so we can parse it
@@ -148,6 +152,7 @@ import Testing
         #expect(bext.codingHistory == "")
     }
     
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func bextChunkWrite() async throws {
         // write to file on disk so we can parse it
