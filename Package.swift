@@ -36,6 +36,10 @@ let package = Package(
         .testTarget(
             name: "SwiftRIFFCoreTests",
             dependencies: ["SwiftRIFFCore", "OTCore"]
+        ),
+        .testTarget(
+            name: "SwiftRIFFWAVTests",
+            dependencies: ["SwiftRIFFWAV", "OTCore"]
         )
     ]
 )
