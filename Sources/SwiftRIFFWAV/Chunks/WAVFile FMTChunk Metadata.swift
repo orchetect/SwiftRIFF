@@ -1,8 +1,7 @@
 //
 //  WAVFile FMTChunk Metadata.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-16.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -57,7 +56,7 @@ extension WAVFile.FMTChunk.Metadata {
         guard let srInt = data[4 ... 7].toUInt32(from: endianness),
               let sr = WAVFile.SampleRate(rawValue: srInt)
         else { throw .invalidSampleRate }
-        self.sampleRate = sr
+        sampleRate = sr
         
         guard let bdInt = data[14 ... 15].toUInt16(from: endianness),
               let bd = WAVFile.BitDepth(rawValue: bdInt)

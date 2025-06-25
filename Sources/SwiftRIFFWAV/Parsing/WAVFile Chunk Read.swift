@@ -1,8 +1,7 @@
 //
 //  WAVFile Chunk Read.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-18.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation

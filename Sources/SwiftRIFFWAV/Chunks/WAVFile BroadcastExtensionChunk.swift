@@ -1,8 +1,7 @@
 //
 //  WAVFile BroadcastExtensionChunk.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-16.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -45,8 +44,7 @@ extension WAVFile {
                     throw RIFFFileReadError.chunkLengthInvalid(forChunkID: descriptor.id.id)
                 }
                 metadata = try Metadata(data: data, endianness: endianness)
-            }
-            catch let error as RIFFFileReadError { throw error }
+            } catch let error as RIFFFileReadError { throw error }
             catch { throw .fileReadError(subError: error) }
         }
     }

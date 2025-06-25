@@ -1,8 +1,7 @@
 //
 //  WAVFile BroadcastExtensionChunk Metadata.swift
-//  SwiftRIFF
-//
-//  Created by Steffan Andrews on 2025-06-19.
+//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
 import Foundation
@@ -83,7 +82,7 @@ extension WAVFile.BroadcastExtensionChunk {
             maxShortTermLoudness: UInt16 = 0,
             codingHistory: String = ""
         ) {
-            self.bwavDescription = String(description.prefix(256))
+            bwavDescription = String(description.prefix(256))
             self.originator = String(originator.prefix(32))
             self.originatorReference = String(originatorReference.prefix(32))
             self.originationDate = String(originationDate.prefix(10))
