@@ -17,15 +17,4 @@ extension NSItemProvider {
         }
         return url
     }
-    
-    func loadWAVFileURL() async -> URL? {
-        guard let url = await loadFileURL() else { return nil }
-        
-        let fileType = UTType(filenameExtension: url.pathExtension)
-        guard fileType == .wav else {
-            print("File type is not a wav file."); return nil
-        }
-        
-        return url
-    }
 }
