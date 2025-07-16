@@ -103,8 +103,6 @@ extension FileHandle {
             throw .chunkLengthInvalid(forChunkID: idString)
         }
         
-        let chunkRange = startOffset ... startOffset + 8 + UInt64(dataLength) - 1 // add ID & data-length byte size
-        
         let dataOffset: UInt64
         do { dataOffset = try handle.offset() }
         catch { throw .fileReadError(subError: error) }
@@ -119,6 +117,8 @@ extension FileHandle {
         } else {
             nil
         }
+        
+        let chunkRange = startOffset ... startOffset + 8 + UInt64(encodedDataRange?.count ?? 0) - 1 // add ID & data-length byte size
         
         let subID: String?
         switch id {

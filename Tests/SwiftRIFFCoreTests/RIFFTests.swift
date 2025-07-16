@@ -104,12 +104,12 @@ private enum SampleRIFF {
         let fmtChunk = try #require(mainChunk.chunks?[0])
         #expect(fmtChunk.id == .init(id: "fmt "))
         #expect(fmtChunk.range == 12 ... 35)
-        #expect(fmtChunk.dataRange == 20 ... 35)
+        #expect(fmtChunk.dataRange == 20 ... 35) // 16 bytes (even)
         
         let dataChunk = try #require(mainChunk.chunks?[1])
         #expect(dataChunk.id == .init(id: "data"))
-        #expect(dataChunk.range == 36 ... 46)
-        #expect(dataChunk.dataRange == 44 ... 46)
+        #expect(dataChunk.range == 36 ... 47) // includes one trailing null pad byte
+        #expect(dataChunk.dataRange == 44 ... 46) // 3 bytes (odd)
         
         // output info block
         print(riffFile.info)
