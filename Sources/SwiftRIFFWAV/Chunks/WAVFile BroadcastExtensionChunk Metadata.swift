@@ -15,15 +15,42 @@ extension WAVFile.BroadcastExtensionChunk {
         ///
         /// (Maximum 256 characters; unused trailing characters should be null bytes.)
         public var bwavDescription: String {
-            didSet { if bwavDescription.count > 256 { bwavDescription = String(bwavDescription.prefix(256)) } }
+            get { bwavDescriptionData.nullTerminatedASCIIString() ?? "" }
+            set { if let ascii = newValue.data(using: .ascii) { bwavDescriptionData = ascii } }
+        }
+        
+        /// Description (raw bytes).
+        ///
+        /// (Maximum 256 characters; unused trailing characters should be null bytes.)
+        public var bwavDescriptionData: Data {
+            didSet {
+                if bwavDescriptionData.count > 256 { bwavDescriptionData = bwavDescriptionData.prefix(256) }
+                if bwavDescriptionData.count < 256 { bwavDescriptionData = bwavDescriptionData.padding(toLength: 256, withPad: 0x00) }
+            }
         }
         
         public var originator: String {
-            didSet { if originator.count > 32 { originator = String(originator.prefix(32)) } }
+            get { originatorData.nullTerminatedASCIIString() ?? "" }
+            set { if let ascii = newValue.data(using: .ascii) { originatorData = ascii } }
+        }
+        
+        public var originatorData: Data {
+            didSet {
+                if originatorData.count > 32 { originatorData = originatorData.prefix(32) }
+                if originatorData.count < 32 { originatorData = originatorData.padding(toLength: 32, withPad: 0x00) }
+            }
         }
         
         public var originatorReference: String {
-            didSet { if originatorReference.count > 32 { originatorReference = String(originatorReference.prefix(32)) } }
+            get { originatorReferenceData.nullTerminatedASCIIString() ?? "" }
+            set { if let ascii = newValue.data(using: .ascii) { originatorReferenceData = ascii } }
+        }
+        
+        public var originatorReferenceData: Data {
+            didSet {
+                if originatorReferenceData.count > 32 { originatorReferenceData = originatorReferenceData.prefix(32) }
+                if originatorReferenceData.count < 32 { originatorReferenceData = originatorReferenceData.padding(toLength: 32, withPad: 0x00) }
+            }
         }
         
         public var originationDate: String {
@@ -82,9 +109,21 @@ extension WAVFile.BroadcastExtensionChunk {
             maxShortTermLoudness: UInt16 = 0,
             codingHistory: String = ""
         ) {
-            bwavDescription = String(description.prefix(256))
-            self.originator = String(originator.prefix(32))
-            self.originatorReference = String(originatorReference.prefix(32))
+            self.bwavDescriptionData = description
+                .prefix(256)
+                .data(using: .ascii)?
+                .padding(toLength: 256, withPad: 0x00)
+                ?? Data(repeating: 0x00, count: 256)
+            self.originatorData = originator
+                .prefix(32)
+                .data(using: .ascii)?
+                .padding(toLength: 32, withPad: 0x00)
+                ?? Data(repeating: 0x00, count: 32)
+            self.originatorReferenceData = originatorReference
+                .prefix(32)
+                .data(using: .ascii)?
+                .padding(toLength: 32, withPad: 0x00)
+                ?? Data(repeating: 0x00, count: 32)
             self.originationDate = String(originationDate.prefix(10))
             self.originationTime = String(originationTime.prefix(8))
             self.timeReference = timeReference
@@ -117,19 +156,22 @@ extension WAVFile.BroadcastExtensionChunk.Metadata {
         else { throw .malformedBroadcastExtensionChunk }
         
         // description (256 bytes)
-        guard let bwavDescription = data.nullTerminatedASCIIString(in: 0 ... 255)
-        else { throw .malformedBroadcastExtensionChunk }
-        self.bwavDescription = bwavDescription
+        bwavDescriptionData = data[0 ... 255]
+        // guard let bwavDescription = data.nullTerminatedASCIIString(in: 0 ... 255)
+        // else { throw .malformedBroadcastExtensionChunk }
+        // self.bwavDescription = bwavDescription
         
         // originator (32 bytes)
-        guard let originator = data.nullTerminatedASCIIString(in: 256 ... 287)
-        else { throw .malformedBroadcastExtensionChunk }
-        self.originator = originator
+        originatorData = data[256 ... 287]
+        // guard let originator = data.nullTerminatedASCIIString(in: 256 ... 287)
+        // else { throw .malformedBroadcastExtensionChunk }
+        // self.originator = originator
         
         // originator reference (32 bytes)
-        guard let originatorReference = data.nullTerminatedASCIIString(in: 288 ... 319)
-        else { throw .malformedBroadcastExtensionChunk }
-        self.originatorReference = originatorReference
+        originatorReferenceData = data[288 ... 319]
+        // guard let originatorReference = data.nullTerminatedASCIIString(in: 288 ... 319)
+        // else { throw .malformedBroadcastExtensionChunk }
+        // self.originatorReference = originatorReference
         
         // origination date (10 bytes)
         guard let originationDate = data[320 ... 329]
@@ -201,9 +243,9 @@ extension WAVFile.BroadcastExtensionChunk.Metadata {
     ///   - endianness: Byte ordering.
     /// - Returns: Chunk data.
     public func data(endianness: NumberEndianness) -> Data {
-        let descriptionBytes = bwavDescription.nullPaddedASCIIStringBytes(length: 256)
-        let originatorBytes = originator.nullPaddedASCIIStringBytes(length: 32)
-        let originatorReferenceBytes = originatorReference.nullPaddedASCIIStringBytes(length: 32)
+        let descriptionBytes = bwavDescriptionData
+        let originatorBytes = originatorData
+        let originatorReferenceBytes = originatorReferenceData
         let originationDateBytes = originationDate.nullPaddedASCIIStringBytes(length: 10)
         let originationTimeBytes = originationTime.nullPaddedASCIIStringBytes(length: 8)
         let timeReferenceBytes = timeReference.toData(endianness).bytes

@@ -10,6 +10,14 @@ import OTCore
 extension Data {
     /// Returns an ASCII string encoded as null-terminated.
     /// If all bytes are non-null, it is assumed no null character is required and all bytes are ASCII characters.
+    package func nullTerminatedASCIIString() -> String? {
+        guard !isEmpty else { return nil }
+        let range = indices.lowerBound ... indices.upperBound - 1
+        return nullTerminatedASCIIString(in: range)
+    }
+    
+    /// Returns an ASCII string encoded as null-terminated.
+    /// If all bytes are non-null, it is assumed no null character is required and all bytes are ASCII characters.
     package func nullTerminatedASCIIString(in range: ClosedRange<Index>) -> String? {
         let firstNullIndex = firstRange(of: [0x00 as UInt8], in: range)?.lowerBound
         
@@ -26,7 +34,7 @@ extension Data {
         // otherwise, assume all bytes prior to the null are ASCII characters
         guard let firstNullIndex else { return nil }
         let parseRange = range.lowerBound ..< firstNullIndex
-        return data[parseRange]
+        return self[parseRange]
             .toString(using: .ascii)
     }
 }
