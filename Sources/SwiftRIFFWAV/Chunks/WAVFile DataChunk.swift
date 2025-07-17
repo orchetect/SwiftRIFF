@@ -27,7 +27,7 @@ extension WAVFile {
             
             range = descriptor.chunkRange
             
-            dataRange = descriptor.dataRange
+            dataRange = descriptor.dataRange?.usableRange
         }
     }
 }

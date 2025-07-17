@@ -52,7 +52,7 @@ extension RIFFFile.LISTChunk {
         
         range = descriptor.chunkRange
         
-        dataRange = descriptor.dataRange
+        dataRange = descriptor.dataRange?.usableRange
         
         // recursively parse child subchunks
         chunks = try handle.parseRIFFSubchunks(

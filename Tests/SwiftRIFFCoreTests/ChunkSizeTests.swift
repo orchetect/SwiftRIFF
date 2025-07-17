@@ -72,8 +72,8 @@ private enum SampleRIFF {
         #expect(descriptor.subID == "DMMY")
         #expect(descriptor.length == 56)
         #expect(descriptor.chunkRange == 0 ... 63)
-        #expect(descriptor.encodedDataRange == 8 ... 63)
-        #expect(descriptor.dataRange == 8 ... 63)
+        #expect(descriptor.dataRange?.usableRange == 8 ... 63)
+        #expect(descriptor.dataRange?.encodedRange == 8 ... 63)
     }
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)

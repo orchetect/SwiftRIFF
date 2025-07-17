@@ -53,6 +53,6 @@ extension RIFFFile.INFOChunk {
         
         range = descriptor.chunkRange
         
-        dataRange = descriptor.dataRange
+        dataRange = descriptor.dataRange?.usableRange
     }
 }

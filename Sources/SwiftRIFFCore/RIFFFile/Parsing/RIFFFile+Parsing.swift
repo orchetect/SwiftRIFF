@@ -148,13 +148,20 @@ extension FileHandle {
         do { try handle.seek(toOffset: chunkRange.upperBound + 1) }
         catch { throw .fileReadError(subError: error) }
         
+        let dataRangeTuple: (
+            usableRange: ClosedRange<UInt64>,
+            encodedRange: ClosedRange<UInt64>
+        )? = if let dataRange, let encodedDataRange {
+            (usableRange: dataRange, encodedRange: encodedDataRange)
+        } else {
+            nil
+        }
         return RIFFChunkDescriptor(
             id: id,
             subID: subID,
             length: dataLength,
             chunkRange: chunkRange,
-            encodedDataRange: encodedDataRange,
-            dataRange: dataRange
+            dataRange: dataRangeTuple
         )
     }
     
@@ -191,7 +198,7 @@ extension FileHandle {
     ) throws(RIFFFileReadError) -> [any RIFFFileChunk] {
         var chunks: [any RIFFFileChunk] = []
         
-        guard let dataRange = descriptor.dataRange else {
+        guard let dataRange = descriptor.dataRange?.usableRange else {
             throw .chunkLengthInvalid(forChunkID: descriptor.id.id)
         }
         let postSubIDOffset = descriptor.subID != nil ? dataRange.lowerBound + 4 : dataRange.lowerBound

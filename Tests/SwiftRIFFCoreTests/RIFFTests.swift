@@ -55,8 +55,8 @@ private enum SampleRIFF {
         #expect(descriptor.subID == "WAVE")
         #expect(descriptor.length == 40)
         #expect(descriptor.chunkRange == 0 ... 47)
-        #expect(descriptor.encodedDataRange == 8 ... 47)
-        #expect(descriptor.dataRange == 8 ... 47)
+        #expect(descriptor.dataRange?.usableRange == 8 ... 47)
+        #expect(descriptor.dataRange?.encodedRange == 8 ... 47)
     }
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
@@ -75,8 +75,8 @@ private enum SampleRIFF {
         #expect(descriptor.subID == nil)
         #expect(descriptor.length == 16)
         #expect(descriptor.chunkRange == 0 ... 23)
-        #expect(descriptor.encodedDataRange == 8 ... 23)
-        #expect(descriptor.dataRange == 8 ... 23)
+        #expect(descriptor.dataRange?.usableRange == 8 ... 23)
+        #expect(descriptor.dataRange?.encodedRange == 8 ... 23)
     }
     
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)

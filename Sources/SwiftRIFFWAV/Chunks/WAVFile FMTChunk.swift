@@ -29,9 +29,9 @@ extension WAVFile {
             
             range = descriptor.chunkRange
             
-            dataRange = descriptor.dataRange
+            dataRange = descriptor.dataRange?.usableRange
             
-            guard let dataRange = descriptor.dataRange else {
+            guard let dataRange = descriptor.dataRange?.usableRange else {
                 throw .chunkLengthInvalid(forChunkID: descriptor.id.id)
             }
             

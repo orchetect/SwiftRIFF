@@ -44,6 +44,6 @@ extension RIFFFile.GenericChunk {
         
         id = descriptor.id
         range = descriptor.chunkRange
-        dataRange = descriptor.dataRange
+        dataRange = descriptor.dataRange?.usableRange
     }
 }
