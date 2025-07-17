@@ -23,7 +23,7 @@ extension RIFFFileReadError {
         switch self {
         case let .fileReadError(subError: subError):
             "File read error"
-                + (subError != nil ? " \(subError!.localizedDescription)" : ".")
+                + (subError != nil ? ": \(subError!.localizedDescription)" : ".")
         case .unsupportedRIF2Type:
             "Unsupported RIF2 type. Support may be added in future."
         case .missingRIFFHeader:
