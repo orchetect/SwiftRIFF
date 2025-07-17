@@ -152,6 +152,51 @@ import Testing
         #expect(bext.codingHistory == "")
     }
     
+    /// Logic Pro writes non-ASCII data to the Description field, and possibly other string fields.
+    /// We want to ensure this does not cause unnecessary parsing failures.
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    @Test
+    func bextChunkReadLogic() async throws {
+        // write to file on disk so we can parse it
+        let tempFile = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).wav")
+        print("Writing to temp file: \(tempFile.path)")
+        try Data(SampleLogicBWAV.bextChunkBytes).write(to: tempFile)
+        
+        let h = try FileHandle(forReadingFrom: tempFile)
+        
+        let bextChunk = try WAVFile.BroadcastExtensionChunk(
+            handle: h,
+            endianness: RIFFFile.Format.riff.endianness,
+            additionalChunkTypes: [:]
+        )
+        
+        // check bext data
+        let bext = bextChunk.metadata
+        #expect(bext.bwavDescription == "")
+        #expect(bext.originator == "Logic Pro")
+        #expect(bext.originatorReference == "")
+        #expect(bext.originationDate == "2025-07-16")
+        #expect(bext.originationTime == "16:39:10")
+        #expect(bext.timeReference == 0x0000_0000_0A4C_B800)
+        #expect(bext.version == 1)
+        #expect(bext.umid == Data([
+            0x00, 0x12, 0xB6, 0xBE, 0xF7, 0x7F, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x12, 0xB6, 0xBE, 0xF7, 0x7F, 0x00, 0x00,
+            0x6B, 0x3D, 0xFD, 0x04, 0x01, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+            0x00, 0x13, 0xB6, 0xBE, 0xF7, 0x7F, 0x00, 0x00,
+            0x3B, 0x73, 0x00, 0x05, 0x01, 0x00, 0x00, 0x00
+        ]))
+        #expect(bext.loudnessValue == 0)
+        #expect(bext.loudnessRange == 0)
+        #expect(bext.maxTruePeakLevel == 0)
+        #expect(bext.maxMomentaryLoudness == 0)
+        #expect(bext.maxShortTermLoudness == 0)
+        #expect(bext.codingHistory == "\0")
+    }
+    
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func bextChunkWrite() async throws {
