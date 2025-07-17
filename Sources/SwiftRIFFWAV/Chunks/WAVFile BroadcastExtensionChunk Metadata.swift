@@ -113,26 +113,21 @@ extension WAVFile.BroadcastExtensionChunk.Metadata {
         // The data may or may not continue with an arbitrary number of ASCII characters defining its
         // Coding History segment.
         
-        guard data.count >= 602 else { throw .malformedBroadcastExtensionChunk }
+        guard data.count >= 602
+        else { throw .malformedBroadcastExtensionChunk }
         
         // description (256 bytes)
-        guard let description = data[0 ... 255]
-            .toString(using: .ascii)?
-            .trimmingCharacters(in: .null)
+        guard let bwavDescription = data.nullTerminatedASCIIString(in: 0 ... 255)
         else { throw .malformedBroadcastExtensionChunk }
-        bwavDescription = description
+        self.bwavDescription = bwavDescription
         
         // originator (32 bytes)
-        guard let originator = data[256 ... 287]
-            .toString(using: .ascii)?
-            .trimmingCharacters(in: .null)
+        guard let originator = data.nullTerminatedASCIIString(in: 256 ... 287)
         else { throw .malformedBroadcastExtensionChunk }
         self.originator = originator
         
         // originator reference (32 bytes)
-        guard let originatorReference = data[288 ... 319]
-            .toString(using: .ascii)?
-            .trimmingCharacters(in: .null)
+        guard let originatorReference = data.nullTerminatedASCIIString(in: 288 ... 319)
         else { throw .malformedBroadcastExtensionChunk }
         self.originatorReference = originatorReference
         
@@ -193,7 +188,8 @@ extension WAVFile.BroadcastExtensionChunk.Metadata {
         
         // coding history (0 or more bytes)
         if data.count > 602 {
-            codingHistory = data[601...].toString(using: .ascii) ?? ""
+            codingHistory = data[602...]
+                .toString(using: .ascii) ?? ""
         } else {
             codingHistory = ""
         }
