@@ -13,12 +13,17 @@ private enum SampleRIFF {
     // note that this mocks the structure of a wave file for purposes of unit testing,
     // but does not actually contain a valid wave file data chunk.
     // it is however correctly formatted as a RIFF file.
-    static let fileBytes: [UInt8] = [
-        // start of file
-        0x52, 0x49, 0x46, 0x46, // "RIFF"
-        0x28, 0x00, 0x00, 0x00, // Total file length minus 8 bytes == int 40
-        0x57, 0x41, 0x56, 0x45 // "WAVE" file type
-    ] + fmtChunkBytes + dataChunkBytes
+    static var fileBytes: [UInt8] {
+        var output: [UInt8] = [
+            // start of file
+            0x52, 0x49, 0x46, 0x46, // "RIFF"
+            0x28, 0x00, 0x00, 0x00, // Total file length minus 8 bytes == int 40
+            0x57, 0x41, 0x56, 0x45 // "WAVE" file type
+        ]
+        output += fmtChunkBytes
+        output += dataChunkBytes
+        return output
+    }
     
     static let fmtChunkBytes: [UInt8] = [
         0x66, 0x6D, 0x74, 0x20, // “fmt "

@@ -10,17 +10,20 @@ import Testing
 
 private enum SampleRIFF {
     // (all integers are stored little-endian)
-    static let fileBytes: [UInt8] = [
-        // start of file
-        0x52, 0x49, 0x46, 0x46, // "RIFF"
-        0x38, 0x00, 0x00, 0x00, // Total file length minus 8 bytes == int 56
-        0x44, 0x4D, 0x4D, 0x59 // "DMMY" file type
-    ]
-    + chk0ChunkBytes
-    + chk1ChunkBytes
-    + chk2ChunkBytes
-    + chk3ChunkBytes
-    + chk4ChunkBytes
+    static var fileBytes: [UInt8] {
+        var output: [UInt8] = [
+            // start of file
+            0x52, 0x49, 0x46, 0x46, // "RIFF"
+            0x38, 0x00, 0x00, 0x00, // Total file length minus 8 bytes == int 56
+            0x44, 0x4D, 0x4D, 0x59 // "DMMY" file type
+        ]
+        output += chk0ChunkBytes
+        output += chk1ChunkBytes
+        output += chk2ChunkBytes
+        output += chk3ChunkBytes
+        output += chk4ChunkBytes
+        return output
+    }
     
     static let chk0ChunkBytes: [UInt8] = [
         0x63, 0x68, 0x6B, 0x30, // “chk0"
