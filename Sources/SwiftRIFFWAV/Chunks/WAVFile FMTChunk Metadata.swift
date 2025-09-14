@@ -81,15 +81,15 @@ extension WAVFile.FMTChunk.Metadata {
         let avgBytesPerSec = UInt32((UInt64(sampleRate.rawValue) * UInt64(bitDepth.rawValue) * UInt64(channels)) / 8)
         let blockAlign = UInt16((bitDepth.rawValue * channels) / 8)
         
-        var bytes: [UInt8] = encoding.rawValue.toData(endianness).bytes
-            + channels.toData(endianness).bytes
-            + sampleRate.rawValue.toData(endianness).bytes
-            + avgBytesPerSec.toData(endianness).bytes
-            + blockAlign.toData(endianness).bytes
-            + bitDepth.rawValue.toData(endianness).bytes
+        var bytes: [UInt8] = encoding.rawValue.toData(endianness).toUInt8Bytes()
+            + channels.toData(endianness).toUInt8Bytes()
+            + sampleRate.rawValue.toData(endianness).toUInt8Bytes()
+            + avgBytesPerSec.toData(endianness).toUInt8Bytes()
+            + blockAlign.toData(endianness).toUInt8Bytes()
+            + bitDepth.rawValue.toData(endianness).toUInt8Bytes()
         
         if let extraBytes {
-            bytes += extraBytes.bytes
+            bytes += extraBytes.toUInt8Bytes()
         }
         
         return Data(bytes)

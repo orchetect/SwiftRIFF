@@ -248,14 +248,14 @@ extension WAVFile.BroadcastExtensionChunk.Metadata {
         let originatorReferenceBytes = originatorReferenceData
         let originationDateBytes = originationDate.nullPaddedASCIIStringBytes(length: 10)
         let originationTimeBytes = originationTime.nullPaddedASCIIStringBytes(length: 8)
-        let timeReferenceBytes = timeReference.toData(endianness).bytes
-        let versionBytes = version.toData(endianness).bytes
+        let timeReferenceBytes = timeReference.toData(endianness).toUInt8Bytes()
+        let versionBytes = version.toData(endianness).toUInt8Bytes()
         let umidBytes = umid.padding(toLength: 64, withPad: 0x00)
-        let loudnessValueBytes = loudnessValue.toData(endianness).bytes
-        let loudnessRangeBytes = loudnessRange.toData(endianness).bytes
-        let maxTruePeakLevelBytes = maxTruePeakLevel.toData(endianness).bytes
-        let maxMomentaryLoudnessBytes = maxMomentaryLoudness.toData(endianness).bytes
-        let maxShortTermLoudnessBytes = maxShortTermLoudness.toData(endianness).bytes
+        let loudnessValueBytes = loudnessValue.toData(endianness).toUInt8Bytes()
+        let loudnessRangeBytes = loudnessRange.toData(endianness).toUInt8Bytes()
+        let maxTruePeakLevelBytes = maxTruePeakLevel.toData(endianness).toUInt8Bytes()
+        let maxMomentaryLoudnessBytes = maxMomentaryLoudness.toData(endianness).toUInt8Bytes()
+        let maxShortTermLoudnessBytes = maxShortTermLoudness.toData(endianness).toUInt8Bytes()
         let reservedBytes = Data(repeating: 0x00, count: 180)
         
         var bytes: [UInt8] = []
@@ -342,7 +342,7 @@ extension StringProtocol {
     func nullPaddedASCIIStringBytes(length: Int) -> [UInt8] {
         padding(toLength: length, withPad: "\n", startingAt: 0)
             .toData(using: .ascii)?
-            .bytes ?? Data(count: length).bytes
+            .toUInt8Bytes() ?? Data(count: length).toUInt8Bytes()
     }
 }
 
