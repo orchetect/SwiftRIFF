@@ -11,9 +11,9 @@ let package = Package(
         .library(name: "SwiftRIFFWAV", targets: ["SwiftRIFFWAV"])
     ],
     dependencies: [
-        .package(url: "https://github.com/orchetect/OTCore", from: "1.7.6"),
+        .package(url: "https://github.com/orchetect/OTCore", from: "1.7.9"),
         .package(url: "https://github.com/orchetect/SwiftRadix", from: "1.3.2"),
-        .package(url: "https://github.com/orchetect/TimecodeKit", from: "2.3.3")
+        .package(url: "https://github.com/orchetect/TimecodeKit", from: "2.3.4")
     ],
     targets: [
         .target(
