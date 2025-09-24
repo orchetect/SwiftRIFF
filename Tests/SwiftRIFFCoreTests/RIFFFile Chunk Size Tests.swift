@@ -1,5 +1,5 @@
 //
-//  ChunkSizeTests.swift
+//  RIFFFile Chunk Size Tests.swift
 //  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
@@ -7,6 +7,49 @@
 import Foundation
 @testable import SwiftRIFFCore
 import Testing
+
+@Suite struct RIFFFile_ChunkSize_Tests {
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    @Test
+    func parseRIFFDescriptor() async throws {
+        // write to file on disk so we can parse it
+        let tempFile = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).riff")
+        print("Writing to temp file: \(tempFile.path)")
+        try Data(SampleRIFF.fileBytes).write(to: tempFile)
+        
+        let h = try FileHandle(forReadingFrom: tempFile)
+        
+        let descriptor = try h.parseRIFFChunkDescriptor(endianness: .littleEndian)
+        
+        #expect(descriptor.id == .riff)
+        #expect(descriptor.subID == "DMMY")
+        #expect(descriptor.length == 56)
+        #expect(descriptor.chunkRange == 0 ... 63)
+        #expect(descriptor.dataRange?.usableRange == 8 ... 63)
+        #expect(descriptor.dataRange?.encodedRange == 8 ... 63)
+    }
+    
+    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
+    @Test
+    func parseRIFF() async throws {
+        // write to file on disk so we can parse it
+        let tempFile = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).riff")
+        print("Writing to temp file: \(tempFile.path)")
+        try Data(SampleRIFF.fileBytes).write(to: tempFile)
+        
+        let riffFile = try RIFFFile(url: tempFile)
+        
+        #expect(riffFile.riffFormat == .riff)
+        #expect(riffFile.chunks.count == 1)
+        
+        let mainChunk = riffFile.chunks[0]
+        #expect(mainChunk.id == .riff)
+        
+        #expect(mainChunk.chunks?.count == 5)
+    }
+}
+
+// MARK: - Mock Data
 
 private enum SampleRIFF {
     // (all integers are stored little-endian)
@@ -56,45 +99,4 @@ private enum SampleRIFF {
         0x04, 0x00, 0x00, 0x00, // Chunk length == int 4
         0x40, 0x41, 0x42, 0x43 // four data bytes
     ]
-}
-
-@Suite struct ChunkSizeTests {
-    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
-    @Test
-    func parseRIFFDescriptor() async throws {
-        // write to file on disk so we can parse it
-        let tempFile = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).riff")
-        print("Writing to temp file: \(tempFile.path)")
-        try Data(SampleRIFF.fileBytes).write(to: tempFile)
-        
-        let h = try FileHandle(forReadingFrom: tempFile)
-        
-        let descriptor = try h.parseRIFFChunkDescriptor(endianness: .littleEndian)
-        
-        #expect(descriptor.id == .riff)
-        #expect(descriptor.subID == "DMMY")
-        #expect(descriptor.length == 56)
-        #expect(descriptor.chunkRange == 0 ... 63)
-        #expect(descriptor.dataRange?.usableRange == 8 ... 63)
-        #expect(descriptor.dataRange?.encodedRange == 8 ... 63)
-    }
-    
-    @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
-    @Test
-    func parseRIFF() async throws {
-        // write to file on disk so we can parse it
-        let tempFile = URL.temporaryDirectory.appending(component: "\(UUID().uuidString).riff")
-        print("Writing to temp file: \(tempFile.path)")
-        try Data(SampleRIFF.fileBytes).write(to: tempFile)
-        
-        let riffFile = try RIFFFile(url: tempFile)
-        
-        #expect(riffFile.riffFormat == .riff)
-        #expect(riffFile.chunks.count == 1)
-        
-        let mainChunk = riffFile.chunks[0]
-        #expect(mainChunk.id == .riff)
-        
-        #expect(mainChunk.chunks?.count == 5)
-    }
 }

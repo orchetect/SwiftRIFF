@@ -1,5 +1,5 @@
 //
-//  WAVFileTests.swift
+//  WAVFile Tests.swift
 //  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
@@ -9,7 +9,7 @@ import SwiftRIFFCore
 @testable import SwiftRIFFWAV
 import Testing
 
-@Suite struct WAVFileTests {
+@Suite struct WAVFile_Tests {
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func wavFile() async throws {

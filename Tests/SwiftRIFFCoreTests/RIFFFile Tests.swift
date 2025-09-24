@@ -1,5 +1,5 @@
 //
-//  RIFFTests.swift
+//  RIFFFile Tests.swift
 //  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
@@ -8,42 +8,7 @@ import Foundation
 @testable import SwiftRIFFCore
 import Testing
 
-private enum SampleRIFF {
-    // (all integers are stored little-endian)
-    // note that this mocks the structure of a wave file for purposes of unit testing,
-    // but does not actually contain a valid wave file data chunk.
-    // it is however correctly formatted as a RIFF file.
-    static var fileBytes: [UInt8] {
-        var output: [UInt8] = [
-            // start of file
-            0x52, 0x49, 0x46, 0x46, // "RIFF"
-            0x28, 0x00, 0x00, 0x00, // Total file length minus 8 bytes == int 40
-            0x57, 0x41, 0x56, 0x45 // "WAVE" file type
-        ]
-        output += fmtChunkBytes
-        output += dataChunkBytes
-        return output
-    }
-    
-    static let fmtChunkBytes: [UInt8] = [
-        0x66, 0x6D, 0x74, 0x20, // “fmt "
-        0x10, 0x00, 0x00, 0x00, // Format chunk length == int 16
-        0x01, 0x00, // Format type. PCM == int 1
-        0x02, 0x00, // Number of channels == int 2
-        0x80, 0xBB, 0x00, 0x00, // Sample Rate == int 48_000
-        0x00, 0x65, 0x04, 0x00, // (SampleRate * BitsPerSample * Channels) / 8 == int 288_000
-        0x06, 0x00, // (BitsPerSample * Channels) / 8 == int 6
-        0x18, 0x00 // Bits per sample == int 24
-    ]
-    
-    static let dataChunkBytes: [UInt8] = [
-        0x64, 0x61, 0x74, 0x61, // "data" chunk ID
-        0x03, 0x00, 0x00, 0x00, // Data chunk length == int 3
-        0x01, 0x02, 0x03, 0x00 // 3 bytes of data + 1 byte of null padding
-    ]
-}
-
-@Suite struct RIFFTests {
+@Suite struct RIFFFile_Tests {
     @available(macOS 13.0, iOS 16.0, watchOS 9.0, tvOS 16.0, *)
     @Test
     func parseRIFFDescriptor() async throws {
@@ -159,4 +124,41 @@ private enum SampleRIFF {
         let fmtData = try h.read(upToCount: fmtDataRangeExcludingSubID.count)
         #expect(fmtData == Data(newFMTData))
     }
+}
+
+// MARK: - Mock Data
+
+private enum SampleRIFF {
+    // (all integers are stored little-endian)
+    // note that this mocks the structure of a wave file for purposes of unit testing,
+    // but does not actually contain a valid wave file data chunk.
+    // it is however correctly formatted as a RIFF file.
+    static var fileBytes: [UInt8] {
+        var output: [UInt8] = [
+            // start of file
+            0x52, 0x49, 0x46, 0x46, // "RIFF"
+            0x28, 0x00, 0x00, 0x00, // Total file length minus 8 bytes == int 40
+            0x57, 0x41, 0x56, 0x45 // "WAVE" file type
+        ]
+        output += fmtChunkBytes
+        output += dataChunkBytes
+        return output
+    }
+    
+    static let fmtChunkBytes: [UInt8] = [
+        0x66, 0x6D, 0x74, 0x20, // “fmt "
+        0x10, 0x00, 0x00, 0x00, // Format chunk length == int 16
+        0x01, 0x00, // Format type. PCM == int 1
+        0x02, 0x00, // Number of channels == int 2
+        0x80, 0xBB, 0x00, 0x00, // Sample Rate == int 48_000
+        0x00, 0x65, 0x04, 0x00, // (SampleRate * BitsPerSample * Channels) / 8 == int 288_000
+        0x06, 0x00, // (BitsPerSample * Channels) / 8 == int 6
+        0x18, 0x00 // Bits per sample == int 24
+    ]
+    
+    static let dataChunkBytes: [UInt8] = [
+        0x64, 0x61, 0x74, 0x61, // "data" chunk ID
+        0x03, 0x00, 0x00, 0x00, // Data chunk length == int 3
+        0x01, 0x02, 0x03, 0x00 // 3 bytes of data + 1 byte of null padding
+    ]
 }

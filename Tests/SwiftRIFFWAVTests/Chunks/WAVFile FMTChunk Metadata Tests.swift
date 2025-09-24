@@ -1,5 +1,5 @@
 //
-//  WAVFileFMTChunkMetadataTests.swift
+//  WAVFile FMTChunk Metadata Tests.swift
 //  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
@@ -8,7 +8,7 @@ import Foundation
 @testable import SwiftRIFFWAV
 import Testing
 
-@Suite struct WAVFileFMTChunkMetadataTests {
+@Suite struct WAVFile_FMTChunk_Metadata_Tests {
     @Test
     func fmtReadChunkMetadata() async throws {
         let fmtBytes: [UInt8] = [

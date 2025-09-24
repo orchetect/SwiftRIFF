@@ -8,7 +8,7 @@ import Foundation
 @testable import SwiftRIFFCore
 import Testing
 
-@Suite struct DataUtilitiesTests {
+@Suite struct Data_Utilities_Tests {
     @Test
     func nullTerminatedASCIIString() throws {
         // #expect(Data().nullTerminatedASCIIString(in: 0 ... 0) == nil) // would crash (as expected)
