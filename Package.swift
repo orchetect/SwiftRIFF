@@ -3,7 +3,7 @@
 import PackageDescription
 
 let package = Package(
-    name: "SwiftRIFF",
+    name: "swift-riff",
     platforms: [.macOS(.v11), .iOS(.v14)],
     products: [
         .library(name: "SwiftRIFF", targets: ["SwiftRIFF", "SwiftRIFFCore", "SwiftRIFFWAV"]),

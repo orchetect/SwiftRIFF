@@ -25,7 +25,7 @@ on:
     - cron: '42 07 * * *'   # once a day @ 7:42am UTC
 
 env:
-  SCHEME: "SwiftRIFF-CI"
+  SCHEME: "swift-riff"
 
 jobs:
   macOS:
