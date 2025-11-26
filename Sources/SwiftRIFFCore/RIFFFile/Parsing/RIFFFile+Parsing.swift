@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import OTCore
+import SwiftExtensions
 
 extension FileHandle {
     /// Parses the file and returns the specific RIFF file format and its chunk information.

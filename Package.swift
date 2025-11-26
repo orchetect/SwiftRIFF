@@ -11,7 +11,7 @@ let package = Package(
         .library(name: "SwiftRIFFWAV", targets: ["SwiftRIFFWAV"])
     ],
     dependencies: [
-        .package(url: "https://github.com/orchetect/OTCore", from: "1.7.9"),
+        .package(url: "https://github.com/orchetect/swift-extensions", from: "2.0.0"),
         .package(url: "https://github.com/orchetect/swift-radix", from: "1.4.0"),
         .package(url: "https://github.com/orchetect/TimecodeKit", from: "2.3.4")
     ],
@@ -23,7 +23,7 @@ let package = Package(
         .target(
             name: "SwiftRIFFCore",
             dependencies: [
-                "OTCore",
+                .product(name: "SwiftExtensions", package: "swift-extensions"),
                 .product(name: "SwiftRadix", package: "swift-radix")
             ]
         ),
@@ -31,18 +31,24 @@ let package = Package(
             name: "SwiftRIFFWAV",
             dependencies: [
                 "SwiftRIFFCore",
-                "OTCore",
+                .product(name: "SwiftExtensions", package: "swift-extensions"),
                 .product(name: "SwiftRadix", package: "swift-radix"),
                 .product(name: "TimecodeKitCore", package: "TimecodeKit")
             ]
         ),
         .testTarget(
             name: "SwiftRIFFCoreTests",
-            dependencies: ["SwiftRIFFCore", "OTCore"]
+            dependencies: [
+                "SwiftRIFFCore", 
+                    .product(name: "SwiftExtensions", package: "swift-extensions")
+            ]
         ),
         .testTarget(
             name: "SwiftRIFFWAVTests",
-            dependencies: ["SwiftRIFFWAV", "OTCore"]
+            dependencies: [
+                "SwiftRIFFWAV", 
+                    .product(name: "SwiftExtensions", package: "swift-extensions")
+            ]
         )
     ]
 )

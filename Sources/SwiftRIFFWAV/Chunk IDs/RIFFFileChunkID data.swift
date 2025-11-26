@@ -4,7 +4,7 @@
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 
-import OTCore
+import SwiftExtensions
 import SwiftRIFFCore
 
 extension RIFFFileChunkID {

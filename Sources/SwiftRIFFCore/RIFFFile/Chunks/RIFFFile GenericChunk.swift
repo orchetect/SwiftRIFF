@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import OTCore
+import SwiftExtensions
 
 extension RIFFFile {
     /// Generic RIFF file chunk.

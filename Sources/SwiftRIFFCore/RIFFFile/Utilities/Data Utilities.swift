@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import OTCore
+import SwiftExtensions
 
 extension Data {
     /// Returns an ASCII string encoded as null-terminated.

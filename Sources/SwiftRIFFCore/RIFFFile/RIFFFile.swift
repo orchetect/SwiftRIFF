@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import OTCore
+import SwiftExtensions
 
 /// A view into a RIFF-based file (RIFF, RIFX, RF64, RIF2).
 ///

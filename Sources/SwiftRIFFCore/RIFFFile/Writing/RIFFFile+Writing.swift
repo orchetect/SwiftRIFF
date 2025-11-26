@@ -5,7 +5,7 @@
 //
 
 import Foundation
-import OTCore
+import SwiftExtensions
 
 extension RIFFFile {
     /// Replaces the chunk in the file on disk with the new chunk supplied.
