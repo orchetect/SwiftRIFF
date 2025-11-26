@@ -1,6 +1,6 @@
 //
 //  RIFFFileChunkID bext.swift
-//  SwiftRIFF • https://github.com/orchetect/SwiftRIFF
+//  swift-riff • https://github.com/orchetect/swift-riff
 //  © 2025-2025 Steffan Andrews • Licensed under MIT License
 //
 

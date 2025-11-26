@@ -9,8 +9,8 @@
 /* Begin PBXBuildFile section */
 		E2135C472E0BAF690064D352 /* SwiftRIFFWAV in Frameworks */ = {isa = PBXBuildFile; productRef = E2135C462E0BAF690064D352 /* SwiftRIFFWAV */; };
 		E2135C5C2E0BB2440064D352 /* TimecodeKitCore in Frameworks */ = {isa = PBXBuildFile; productRef = E2135C5B2E0BB2440064D352 /* TimecodeKitCore */; };
-		E2135C5F2E0BB24E0064D352 /* SwiftRadix in Frameworks */ = {isa = PBXBuildFile; productRef = E2135C5E2E0BB24E0064D352 /* SwiftRadix */; };
 		E28062222ED66D5300B44729 /* SwiftRIFF in Frameworks */ = {isa = PBXBuildFile; productRef = E28062212ED66D5300B44729 /* SwiftRIFF */; };
+		E2C9AD742ED6A2EB009C3E72 /* SwiftRadix in Frameworks */ = {isa = PBXBuildFile; productRef = E2C9AD732ED6A2EB009C3E72 /* SwiftRadix */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,7 +33,7 @@
 				E2135C5C2E0BB2440064D352 /* TimecodeKitCore in Frameworks */,
 				E28062222ED66D5300B44729 /* SwiftRIFF in Frameworks */,
 				E2135C472E0BAF690064D352 /* SwiftRIFFWAV in Frameworks */,
-				E2135C5F2E0BB24E0064D352 /* SwiftRadix in Frameworks */,
+				E2C9AD742ED6A2EB009C3E72 /* SwiftRadix in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -78,8 +78,8 @@
 			packageProductDependencies = (
 				E2135C462E0BAF690064D352 /* SwiftRIFFWAV */,
 				E2135C5B2E0BB2440064D352 /* TimecodeKitCore */,
-				E2135C5E2E0BB24E0064D352 /* SwiftRadix */,
 				E28062212ED66D5300B44729 /* SwiftRIFF */,
+				E2C9AD732ED6A2EB009C3E72 /* SwiftRadix */,
 			);
 			productName = RIFFExample;
 			productReference = E2135B5F2E0B7DCE0064D352 /* WAVExample.app */;
@@ -111,8 +111,8 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				E2135C5A2E0BB2440064D352 /* XCRemoteSwiftPackageReference "TimecodeKit" */,
-				E2135C5D2E0BB24E0064D352 /* XCRemoteSwiftPackageReference "SwiftRadix" */,
 				E28062202ED66D5300B44729 /* XCLocalSwiftPackageReference "../../../swift-riff" */,
+				E2C9AD722ED6A2EB009C3E72 /* XCRemoteSwiftPackageReference "swift-radix" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = E2135B602E0B7DCE0064D352 /* Products */;
@@ -362,12 +362,12 @@
 				minimumVersion = 2.3.4;
 			};
 		};
-		E2135C5D2E0BB24E0064D352 /* XCRemoteSwiftPackageReference "SwiftRadix" */ = {
+		E2C9AD722ED6A2EB009C3E72 /* XCRemoteSwiftPackageReference "swift-radix" */ = {
 			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/orchetect/SwiftRadix";
+			repositoryURL = "https://github.com/orchetect/swift-radix";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.2;
+				minimumVersion = 1.4.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -382,14 +382,14 @@
 			package = E2135C5A2E0BB2440064D352 /* XCRemoteSwiftPackageReference "TimecodeKit" */;
 			productName = TimecodeKitCore;
 		};
-		E2135C5E2E0BB24E0064D352 /* SwiftRadix */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = E2135C5D2E0BB24E0064D352 /* XCRemoteSwiftPackageReference "SwiftRadix" */;
-			productName = SwiftRadix;
-		};
 		E28062212ED66D5300B44729 /* SwiftRIFF */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = SwiftRIFF;
+		};
+		E2C9AD732ED6A2EB009C3E72 /* SwiftRadix */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E2C9AD722ED6A2EB009C3E72 /* XCRemoteSwiftPackageReference "swift-radix" */;
+			productName = SwiftRadix;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

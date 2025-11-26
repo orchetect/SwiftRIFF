@@ -23,7 +23,7 @@
 --funcattributes prev-line
 --groupedextension "MARK: %c"
 --guardelse auto
---header "\n {file}\n SwiftRIFF • https://github.com/orchetect/SwiftRIFF\n © 2025-{year} Steffan Andrews • Licensed under MIT License\n"
+--header "\n {file}\n swift-riff • https://github.com/orchetect/swift-riff\n © 2025-{year} Steffan Andrews • Licensed under MIT License\n"
 --hexgrouping 4,8
 --hexliteralcase uppercase
 --ifdef no-indent
