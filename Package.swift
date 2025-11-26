@@ -12,7 +12,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/orchetect/OTCore", from: "1.7.9"),
-        .package(url: "https://github.com/orchetect/SwiftRadix", from: "1.3.2"),
+        .package(url: "https://github.com/orchetect/swift-radix", from: "1.4.0"),
         .package(url: "https://github.com/orchetect/TimecodeKit", from: "2.3.4")
     ],
     targets: [
@@ -22,14 +22,17 @@ let package = Package(
         ),
         .target(
             name: "SwiftRIFFCore",
-            dependencies: ["OTCore", "SwiftRadix"]
+            dependencies: [
+                "OTCore",
+                .product(name: "SwiftRadix", package: "swift-radix")
+            ]
         ),
         .target(
             name: "SwiftRIFFWAV",
             dependencies: [
                 "SwiftRIFFCore",
                 "OTCore",
-                "SwiftRadix",
+                .product(name: "SwiftRadix", package: "swift-radix"),
                 .product(name: "TimecodeKitCore", package: "TimecodeKit")
             ]
         ),
