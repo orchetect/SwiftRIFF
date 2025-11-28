@@ -13,7 +13,7 @@ let package = Package(
     dependencies: [
         .package(url: "https://github.com/orchetect/swift-extensions", from: "2.0.0"),
         .package(url: "https://github.com/orchetect/swift-radix", from: "1.4.0"),
-        .package(url: "https://github.com/orchetect/TimecodeKit", from: "2.3.4")
+        .package(url: "https://github.com/orchetect/swift-timecode", from: "3.0.0")
     ],
     targets: [
         .target(
@@ -33,7 +33,7 @@ let package = Package(
                 "SwiftRIFFCore",
                 .product(name: "SwiftExtensions", package: "swift-extensions"),
                 .product(name: "SwiftRadix", package: "swift-radix"),
-                .product(name: "TimecodeKitCore", package: "TimecodeKit")
+                .product(name: "SwiftTimecodeCore", package: "swift-timecode")
             ]
         ),
         .testTarget(

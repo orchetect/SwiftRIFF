@@ -7,7 +7,7 @@
 import SwiftRadix
 import SwiftRIFFWAV
 import SwiftUI
-import TimecodeKitCore
+import SwiftTimecodeCore
 
 struct BextInfoView: View {
     let sampleRate: WAVFile.SampleRate
